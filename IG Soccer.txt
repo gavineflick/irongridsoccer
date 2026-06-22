@@ -1,0 +1,269 @@
+html<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soccer Squares Pool</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green: #1a6e3c; --green-light: #e8f5ee; --green-mid: #2d9e5f;
+    --pitch: #0f5c30; --accent: #f5c842;
+    --text: #1a1a1a; --text-muted: #666; --text-hint: #999;
+    --border: #d4d4d4; --border-light: #e8e8e8;
+    --bg: #f7f7f5; --surface: #ffffff; --surface2: #f2f2f0;
+    --radius: 8px; --radius-lg: 12px; --red: #c0392b;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  header { background: var(--pitch); color: white; padding: 2rem 2rem 1.75rem; position: relative; overflow: hidden; }
+  header::before { content:''; position:absolute; top:-50px; right:-50px; width:220px; height:220px; border:2px solid rgba(255,255,255,0.07); border-radius:50%; }
+  header::after { content:''; position:absolute; bottom:-70px; left:38%; width:160px; height:160px; border:2px solid rgba(255,255,255,0.05); border-radius:50%; }
+  .header-inner { max-width: 820px; margin: 0 auto; position: relative; z-index: 1; }
+  .header-badge { display:inline-block; background:var(--accent); color:#1a1a1a; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; padding:3px 10px; border-radius:4px; margin-bottom:10px; }
+  header h1 { font-size: clamp(1.5rem,4vw,2.2rem); font-weight:600; letter-spacing:-0.02em; line-height:1.15; margin-bottom:6px; }
+  header p { font-size:13px; opacity:0.6; font-family:'DM Mono',monospace; }
+  .main { max-width: 820px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+  .step { background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:1.25rem; margin-bottom:1rem; }
+  .step-head { font-size:13px; font-weight:600; margin-bottom:1rem; display:flex; align-items:center; gap:8px; }
+  .step-num { background:var(--surface2); border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:var(--text-muted); flex-shrink:0; }
+  .step-hint { font-size:11px; color:var(--text-hint); font-weight:400; }
+  .field-label { font-size:12px; color:var(--text-muted); display:block; margin-bottom:5px; }
+  input[type=text], input[type=number] { width:100%; padding:7px 10px; border:1px solid var(--border); border-radius:var(--radius); font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text); background:var(--surface); outline:none; transition:border-color 0.15s; height:34px; }
+  input[type=text]:focus, input[type=number]:focus { border-color:var(--green-mid); }
+  .name-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(170px,1fr)); gap:6px; margin-bottom:10px; }
+  .name-row { display:flex; gap:5px; align-items:center; }
+  .name-num { font-size:11px; color:var(--text-hint); width:18px; text-align:right; flex-shrink:0; font-family:'DM Mono',monospace; }
+  .name-row input { flex:1; font-size:12px; }
+  .icon-btn { background:none; border:1px dashed var(--border); border-radius:var(--radius); padding:6px 12px; font-size:12px; color:var(--text-muted); cursor:pointer; font-family:'DM Sans',sans-serif; display:inline-flex; align-items:center; gap:5px; }
+  .icon-btn:hover { background:var(--surface2); }
+  .remove-btn { background:none; border:none; color:var(--text-hint); cursor:pointer; font-size:16px; line-height:1; padding:0 4px; flex-shrink:0; }
+  .remove-btn:hover { color:var(--red); }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .total-display { font-size:22px; font-weight:600; color:var(--text); padding-top:2px; font-family:'DM Mono',monospace; }
+  .payout-entry { display:grid; grid-template-columns:1fr 110px 32px; gap:8px; align-items:end; margin-bottom:8px; }
+  .payout-status { font-size:12px; margin-top:8px; }
+  .ok { color:var(--green); } .err { color:var(--red); }
+  .generate-btn { width:100%; padding:11px; font-size:14px; font-weight:600; font-family:'DM Sans',sans-serif; background:var(--pitch); color:white; border:none; border-radius:var(--radius); cursor:pointer; transition:background 0.15s; margin-top:0.5rem; }
+  .generate-btn:hover { background:var(--green); }
+  .err-msg { font-size:12px; color:var(--red); margin-top:6px; }
+  .section-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-muted); margin-bottom:0.6rem; }
+  .metrics { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:1.25rem; }
+  .metric { background:var(--surface2); border-radius:var(--radius); padding:0.75rem 1rem; }
+  .metric-label { font-size:11px; color:var(--text-muted); margin-bottom:3px; }
+  .metric-value { font-size:20px; font-weight:600; font-family:'DM Mono',monospace; }
+  .payouts-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:1.25rem; }
+  .payout-chip { background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius); padding:0.65rem 1rem; }
+  .payout-chip.ht { background:#fff9e1; border-color:#e8c94a; }
+  .payout-chip.fn { background:var(--green-light); border-color:var(--green-mid); }
+  .chip-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin-bottom:3px; }
+  .payout-chip.ht .chip-label { color:#7a6000; } .payout-chip.fn .chip-label { color:var(--green); }
+  .chip-amount { font-size:22px; font-weight:600; font-family:'DM Mono',monospace; }
+  .payout-chip.ht .chip-amount { color:#4a3800; } .payout-chip.fn .chip-amount { color:var(--pitch); }
+  .chip-sub { font-size:11px; color:var(--text-hint); margin-top:2px; }
+  .payout-chip.ht .chip-sub { color:#7a6000; } .payout-chip.fn .chip-sub { color:var(--green); }
+  .pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1.25rem; }
+  .pill { display:flex; align-items:center; gap:7px; background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius); padding:5px 10px; font-size:12px; }
+  .pdot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+  .pill-name { font-weight:600; }
+  .pill-squares { font-size:10px; color:var(--text-hint); font-family:'DM Mono',monospace; margin-left:2px; }
+  .action-btns { display:flex; gap:8px; margin-bottom:1rem; flex-wrap:wrap; }
+  .reroll-btn, .print-btn { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:7px 14px; font-size:12px; cursor:pointer; color:var(--text); font-family:'DM Sans',sans-serif; display:inline-flex; align-items:center; gap:6px; }
+  .reroll-btn:hover, .print-btn:hover { background:var(--surface2); }
+  .grid-outer { overflow-x:auto; margin-bottom:1.25rem; }
+  .axis-header { display:flex; margin-bottom:3px; }
+  .axis-title-h { flex:1; text-align:center; font-size:11px; color:var(--text-hint); font-weight:500; }
+  table.sq { border-collapse:collapse; width:100%; }
+  table.sq td, table.sq th { border:1px solid var(--border-light); text-align:center; padding:2px; }
+  table.sq .corner { border:none; background:transparent; }
+  table.sq .ax { background:var(--pitch); color:rgba(255,255,255,0.8); font-family:'DM Mono',monospace; font-size:14px; font-weight:500; width:36px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  table.sq .sq-cell { height:54px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  .sq-name { font-size:10px; font-weight:600; line-height:1.3; }
+  .sq-coord { font-size:9px; opacity:0.45; margin-top:2px; font-family:'DM Mono',monospace; }
+  .legend { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1.25rem; }
+  .legend-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--text-muted); }
+  .ldot { width:11px; height:11px; border-radius:3px; flex-shrink:0; border:1px solid rgba(0,0,0,0.1); }
+  .rules-box { background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius); padding:1rem 1.25rem; font-size:12px; color:var(--text-muted); line-height:1.7; }
+  .rules-box strong { color:var(--text); }
+  @media (max-width:520px) {
+    .metrics { grid-template-columns:repeat(2,1fr); }
+    .row2 { grid-template-columns:1fr; }
+    .payout-entry { grid-template-columns:1fr 90px 28px; }
+  }
+  @media print {
+    .step, .generate-btn, .action-btns, .icon-btn { display:none !important; }
+    header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="header-badge">⚽ Soccer Squares</div>
+    <h1>Match Day Squares Pool</h1>
+    <p>Configure participants, buy-in &amp; payouts below</p>
+  </div>
+</header>
+<div class="main">
+  <div class="step">
+    <div class="step-head"><span class="step-num">1</span> Participants <span class="step-hint">(up to 25)</span></div>
+    <div class="name-grid" id="name-grid"></div>
+    <button class="icon-btn" onclick="addName()">+ Add participant</button>
+    <div class="err-msg" id="name-err"></div>
+  </div>
+  <div class="step">
+    <div class="step-head"><span class="step-num">2</span> Buy-in</div>
+    <div class="row2">
+      <div>
+        <label class="field-label" for="buyin">Buy-in per participant ($)</label>
+        <input type="number" id="buyin" value="50" min="1" step="1" oninput="updatePool()">
+      </div>
+      <div>
+        <span class="field-label">Total pool</span>
+        <div class="total-display" id="total-pool">$500</div>
+      </div>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-head"><span class="step-num">3</span> Payouts <span class="step-hint">(must total 100%)</span></div>
+    <div id="payout-rows"></div>
+    <button class="icon-btn" onclick="addPayout()" style="margin-top:6px">+ Add checkpoint</button>
+    <div class="payout-status" id="payout-status"></div>
+  </div>
+  <button class="generate-btn" onclick="generate()">Generate squares</button>
+  <div class="err-msg" id="gen-err"></div>
+  <div id="result" style="display:none; margin-top:1.5rem;"></div>
+</div>
+<script>
+const BG  = ["#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#F1EFE8","#E1F5EE","#EEEDFE","#FAECE7","#E6F1FB","#FBEAF0","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB"];
+const FG  = ["#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#444441","#085041","#3C3489","#712B13","#0C447C","#72243E","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F"];
+const DOT = ["#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#5F5E5A","#0F6E56","#534AB7","#993C1D","#185FA5","#993556","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D"];
+let names = ["Alex","Blake","Casey","Dana","Elliot","Frankie","Harper","Jordan","Morgan","Riley"];
+let payouts = [{label:"Halftime",pct:25},{label:"Final score",pct:75}];
+let lastNames=null,lastOwner=null,lastHome=null,lastAway=null;
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function renderNames(){
+  document.getElementById('name-grid').innerHTML=names.map((n,i)=>`
+    <div class="name-row"><span class="name-num">${i+1}</span>
+    <input type="text" value="${n.replace(/"/g,'&quot;')}" placeholder="Name ${i+1}" oninput="names[${i}]=this.value;updatePool()">
+    <button class="remove-btn" onclick="removeName(${i})" aria-label="Remove">&times;</button></div>`).join('');
+}
+function addName(){
+  if(names.length>=25){document.getElementById('name-err').textContent='Maximum 25 participants.';return;}
+  document.getElementById('name-err').textContent='';
+  names.push('');renderNames();updatePool();
+  document.querySelectorAll('.name-row input')[names.length-1].focus();
+}
+function removeName(i){if(names.length<=1)return;names.splice(i,1);renderNames();updatePool();}
+function updatePool(){
+  const b=parseFloat(document.getElementById('buyin').value)||0;
+  const n=names.filter(x=>x.trim()).length;
+  document.getElementById('total-pool').textContent='$'+(n*b).toLocaleString();
+  updatePayoutStatus();
+}
+function renderPayouts(){
+  document.getElementById('payout-rows').innerHTML=payouts.map((p,i)=>`
+    <div class="payout-entry">
+      <div>${i===0?'<label class="field-label">Checkpoint label</label>':''}
+        <input type="text" value="${p.label.replace(/"/g,'&quot;')}" placeholder="e.g. Halftime" oninput="payouts[${i}].label=this.value"></div>
+      <div>${i===0?'<label class="field-label">% of pool</label>':''}
+        <input type="number" value="${p.pct}" min="0" max="100" step="1" oninput="payouts[${i}].pct=parseFloat(this.value)||0;updatePayoutStatus()"></div>
+      <button class="remove-btn" style="padding-top:${i===0?'20px':'0'}" onclick="removePayout(${i})" aria-label="Remove">&times;</button>
+    </div>`).join('');
+  updatePayoutStatus();
+}
+function addPayout(){payouts.push({label:'',pct:0});renderPayouts();}
+function removePayout(i){if(payouts.length<=1)return;payouts.splice(i,1);renderPayouts();}
+function updatePayoutStatus(){
+  const sum=payouts.reduce((a,p)=>a+(parseFloat(p.pct)||0),0);
+  document.getElementById('payout-status').innerHTML=Math.round(sum)===100
+    ?'<span class="ok">✓ Payouts total 100%</span>'
+    :`<span class="err">Payouts total ${sum.toFixed(0)}% — must equal 100%</span>`;
+}
+function buildGrid(vn){
+  const n=vn.length,total=25,idx=shuffle(Array.from({length:total},(_,i)=>i));
+  const owner=new Array(total).fill(null);
+  const base=Math.floor(total/n),extra=total%n;
+  let pos=0;
+  vn.forEach((_,pi)=>{const c=base+(pi<extra?1:0);for(let s=0;s<c;s++)owner[idx[pos++]]=pi;});
+  return{owner,home:shuffle([0,1,2,3,4]),away:shuffle([0,1,2,3,4])};
+}
+function renderResult(vn,owner,home,away){
+  const buyin=parseFloat(document.getElementById('buyin').value)||0;
+  const total=vn.length*buyin;
+  const base=Math.floor(25/vn.length),extra=25%vn.length;
+  let h='';
+  h+=`<div class="section-label">Summary</div><div class="metrics">
+    <div class="metric"><div class="metric-label">Total pool</div><div class="metric-value">$${total.toLocaleString()}</div></div>
+    <div class="metric"><div class="metric-label">Participants</div><div class="metric-value">${vn.length}</div></div>
+    <div class="metric"><div class="metric-label">Buy-in</div><div class="metric-value">$${buyin.toLocaleString()}</div></div>
+    <div class="metric"><div class="metric-label">Squares each</div><div class="metric-value">${base}${extra>0?'–'+(base+1):''}</div></div></div>`;
+  h+=`<div class="section-label">Payouts</div><div class="payouts-row">`;
+  payouts.forEach((p,i)=>{
+    const amt=Math.round(total*(parseFloat(p.pct)||0)/100);
+    const cls=i===0?'ht':(i===payouts.length-1?'fn':'');
+    h+=`<div class="payout-chip ${cls}"><div class="chip-label">${p.label||'Checkpoint '+(i+1)}</div><div class="chip-amount">$${amt.toLocaleString()}</div><div class="chip-sub">${p.pct}% of pool</div></div>`;
+  });
+  h+='</div>';
+  h+=`<div class="section-label">Assignments</div><div class="pills">`;
+  vn.forEach((name,i)=>{
+    const sqs=owner.reduce((a,o,idx)=>{if(o===i)a.push(idx);return a;},[]);
+    const coords=sqs.map(idx=>`${home[idx%5]}-${away[Math.floor(idx/5)]}`).join(' ');
+    h+=`<div class="pill"><div class="pdot" style="background:${DOT[i]}"></div><span class="pill-name">${name}</span><span class="pill-squares">${coords}</span></div>`;
+  });
+  h+='</div>';
+  h+=`<div class="action-btns">
+    <button class="reroll-btn" onclick="reroll()">↺ Re-randomize</button>
+    <button class="print-btn" onclick="window.print()">🖨 Print</button></div>`;
+  h+=`<div class="section-label">Grid — home team (columns) | away team (rows)</div>
+  <div class="grid-outer"><div class="axis-header"><div style="width:37px;flex-shrink:0"></div>
+  <div class="axis-title-h">← Home team score (last digit) →</div></div>
+  <table class="sq"><thead><tr><th class="corner ax"></th>`;
+  home.forEach(d=>{h+=`<th class="ax">${d}</th>`;});
+  h+='</tr></thead><tbody>';
+  for(let r=0;r<5;r++){
+    h+=`<tr><th class="ax">${away[r]}</th>`;
+    for(let c=0;c<5;c++){
+      const idx=r*5+c,o=owner[idx];
+      if(o!==null){
+        h+=`<td class="sq-cell" style="background:${BG[o]};color:${FG[o]}"><div class="sq-name">${vn[o]}</div><div class="sq-coord">${home[c]}-${away[r]}</div></td>`;
+      }else{
+        h+=`<td class="sq-cell" style="background:#f2f2f0;color:#aaa"><div class="sq-name" style="font-size:9px">House</div><div class="sq-coord">${home[c]}-${away[r]}</div></td>`;
+      }
+    }
+    h+='</tr>';
+  }
+  h+='</tbody></table></div>';
+  h+=`<div class="section-label">Legend</div><div class="legend">`;
+  vn.forEach((name,i)=>{h+=`<div class="legend-item"><div class="ldot" style="background:${BG[i]};border-color:${DOT[i]}"></div>${name}</div>`;});
+  if(owner.includes(null))h+=`<div class="legend-item"><div class="ldot" style="background:#f2f2f0"></div>House</div>`;
+  h+='</div>';
+  const noteExtra=extra>0?` With ${vn.length} participants, ${extra} player${extra>1?'s':''} get${extra===1?'s':''} ${base+1} squares; the rest get ${base}.`:'';
+  h+=`<div class="rules-box"><strong>How to find the winner:</strong> At each checkpoint, take the last digit of each team's score. Find where the home digit (column) meets the away digit (row) — that square wins. Example: a 2–1 scoreline means column 2, row 1.<br><br><strong>Digits are randomized</strong> — make sure everyone sees the final grid before the match.${noteExtra}</div>`;
+  const res=document.getElementById('result');
+  res.innerHTML=h;res.style.display='block';
+}
+function generate(){
+  document.getElementById('gen-err').textContent='';
+  const vn=names.filter(n=>n.trim());
+  if(vn.length<1){document.getElementById('gen-err').textContent='Add at least 1 participant.';return;}
+  if(vn.length>25){document.getElementById('gen-err').textContent='Maximum 25 participants.';return;}
+  const sum=payouts.reduce((a,p)=>a+(parseFloat(p.pct)||0),0);
+  if(Math.round(sum)!==100){document.getElementById('gen-err').textContent='Payouts must total 100%.';return;}
+  const buyin=parseFloat(document.getElementById('buyin').value)||0;
+  if(buyin<1){document.getElementById('gen-err').textContent='Enter a valid buy-in amount.';return;}
+  const{owner,home,away}=buildGrid(vn);
+  lastNames=vn;lastOwner=owner;lastHome=home;lastAway=away;
+  renderResult(vn,owner,home,away);
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function reroll(){
+  if(!lastNames)return;
+  const{owner,home,away}=buildGrid(lastNames);
+  lastOwner=owner;lastHome=home;lastAway=away;
+  renderResult(lastNames,owner,home,away);
+}
+renderNames();renderPayouts();updatePool();
+</script>
+</body>
+</html>
