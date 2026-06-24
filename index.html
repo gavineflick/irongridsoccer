@@ -120,7 +120,7 @@
       </div>
       <div>
         <span class="field-label">Total pool</span>
-        <div class="total-display" id="total-pool">$500</div>
+        <div class="total-display" id="total-pool">$0</div>
       </div>
     </div>
   </div>
@@ -138,14 +138,15 @@
 const BG  = ["#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#F1EFE8","#E1F5EE","#EEEDFE","#FAECE7","#E6F1FB","#FBEAF0","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB"];
 const FG  = ["#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#444441","#085041","#3C3489","#712B13","#0C447C","#72243E","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F"];
 const DOT = ["#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#5F5E5A","#0F6E56","#534AB7","#993C1D","#185FA5","#993556","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D"];
-let names = ["Alex","Blake","Casey","Dana","Elliot","Frankie","Harper","Jordan","Morgan","Riley"];
+let names = [""];
 let payouts = [{label:"Halftime",pct:25},{label:"Final score",pct:75}];
 let lastNames=null,lastOwner=null,lastHome=null,lastAway=null;
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 function renderNames(){
   document.getElementById('name-grid').innerHTML=names.map((n,i)=>`
     <div class="name-row"><span class="name-num">${i+1}</span>
-    <input type="text" value="${n.replace(/"/g,'&quot;')}" placeholder="Name ${i+1}" oninput="names[${i}]=this.value;updatePool()">
+    <input type="text" value="${n.replace(/"/g,'&quot;')}" placeholder="Add name"
+      oninput="names[${i}]=this.value;updatePool()">
     <button class="remove-btn" onclick="removeName(${i})" aria-label="Remove">&times;</button></div>`).join('');
 }
 function addName(){
