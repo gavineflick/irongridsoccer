@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Soccer Squares Pool</title>
+<title>Soccer Squares — Claim Your Square</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,71 +20,73 @@
   header { background: var(--pitch); color: white; padding: 2rem 2rem 1.75rem; position: relative; overflow: hidden; }
   header::before { content:''; position:absolute; top:-50px; right:-50px; width:220px; height:220px; border:2px solid rgba(255,255,255,0.07); border-radius:50%; }
   header::after { content:''; position:absolute; bottom:-70px; left:38%; width:160px; height:160px; border:2px solid rgba(255,255,255,0.05); border-radius:50%; }
-  .header-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+  .header-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
   .header-badge { display:inline-block; background:var(--accent); color:#1a1a1a; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; padding:3px 10px; border-radius:4px; margin-bottom:10px; }
   header h1 { font-size: clamp(1.5rem,4vw,2.2rem); font-weight:600; letter-spacing:-0.02em; line-height:1.15; margin-bottom:6px; }
   header p { font-size:13px; opacity:0.6; font-family:'DM Mono',monospace; }
 
-  .main { max-width: 900px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+  .main { max-width: 960px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
 
   .setup-bar { display:flex; gap:12px; align-items:flex-end; margin-bottom:1.25rem; flex-wrap:wrap; background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius); padding:1rem 1.25rem; }
-  .field-g { display:flex; flex-direction:column; gap:4px; }
-  .field-g label { font-size:12px; color:var(--text-muted); }
-  .field-g input, .field-g select { height:34px; border:1px solid var(--border); border-radius:var(--radius); font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text); background:var(--surface); padding:0 10px; outline:none; }
-  .field-g input { width:100px; }
-  .field-g select { width:140px; }
-  .field-g input:focus, .field-g select:focus { border-color:var(--green-mid); }
+  .fg { display:flex; flex-direction:column; gap:4px; }
+  .fg label { font-size:12px; color:var(--text-muted); }
+  .fg select, .fg input[type=number] { height:34px; border:1px solid var(--border); border-radius:var(--radius); font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text); background:var(--surface); padding:0 10px; outline:none; }
+  .fg select { width:160px; }
+  .fg input[type=number] { width:100px; }
+  .fg select:focus, .fg input:focus { border-color:var(--green-mid); }
 
   .start-btn { background:var(--pitch); color:white; border:none; border-radius:var(--radius); padding:8px 18px; font-size:13px; font-weight:600; font-family:'DM Sans',sans-serif; cursor:pointer; height:34px; }
   .start-btn:hover { background:var(--green); }
   .reset-btn { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:8px 14px; font-size:12px; font-family:'DM Sans',sans-serif; cursor:pointer; color:var(--text-muted); height:34px; }
   .reset-btn:hover { background:var(--surface2); }
 
-  .status-bar { display:flex; flex-wrap:wrap; gap:16px; font-size:12px; color:var(--text-muted); margin-bottom:1.25rem; }
-  .status-val { font-weight:600; color:var(--text); }
+  .stat-bar { display:flex; flex-wrap:wrap; gap:16px; font-size:12px; color:var(--text-muted); margin-bottom:1rem; }
+  .sv { font-weight:600; color:var(--text); }
+
+  .banner { background:var(--green-light); border:1px solid var(--green-mid); border-radius:var(--radius); padding:0.75rem 1.25rem; font-size:13px; color:#085041; margin-bottom:1.25rem; font-weight:500; line-height:1.6; }
 
   .section-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-muted); margin-bottom:0.5rem; }
 
   .grid-outer { overflow-x:auto; margin-bottom:1rem; }
-  .axis-header { display:flex; margin-bottom:3px; }
-  .axis-title-h { flex:1; text-align:center; font-size:11px; color:var(--text-hint); }
+  .ax-header { display:flex; margin-bottom:3px; }
+  .ax-title { flex:1; text-align:center; font-size:11px; color:var(--text-hint); }
 
   table.sq { border-collapse:collapse; }
   table.sq td, table.sq th { border:1px solid var(--border-light); text-align:center; }
-  table.sq .corner { border:none; background:transparent; width:32px; height:32px; }
-  table.sq .ax { background:var(--pitch); color:rgba(255,255,255,0.85); font-family:'DM Mono',monospace; font-size:14px; font-weight:500; width:32px; height:32px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-  table.sq .ax.tbd { color:rgba(255,255,255,0.3); font-size:11px; }
-  table.sq .sq-cell { width:82px; height:62px; cursor:pointer; position:relative; transition:background 0.1s; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  table.sq .corner { border:none; background:transparent; width:34px; height:34px; }
+  table.sq .ax { background:var(--pitch); color:rgba(255,255,255,0.85); font-family:'DM Mono',monospace; font-size:14px; font-weight:500; width:34px; height:34px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  table.sq .ax.tbd { color:rgba(255,255,255,0.28); font-size:10px; }
+  table.sq .sq-cell { width:90px; height:66px; cursor:pointer; position:relative; }
   table.sq .sq-cell.empty { background:var(--surface); }
   table.sq .sq-cell.empty:hover { background:#f0faf5; }
-  table.sq .sq-cell.taken { cursor:default; }
+  table.sq .sq-cell.taken { cursor:default; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 
   .cell-inner { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; padding:4px; }
   .cell-name { font-size:11px; font-weight:600; line-height:1.3; }
-  .cell-hint { font-size:9px; color:var(--text-hint); }
+  .cell-hint { font-size:10px; color:var(--text-hint); }
   .cell-coord { font-size:9px; opacity:0.4; font-family:'DM Mono',monospace; margin-top:2px; }
 
-  .name-input-wrap { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(240,250,245,0.95); }
-  .cell-input { width:74px; height:28px; font-size:11px; text-align:center; border:1.5px solid var(--green-mid); border-radius:4px; background:white; font-family:'DM Sans',sans-serif; outline:none; }
-
-  .reveal-wrap { margin-bottom:1.25rem; }
-  .reveal-btn { background:var(--accent); color:#1a1a1a; border:none; border-radius:var(--radius); padding:10px 24px; font-size:14px; font-weight:700; font-family:'DM Sans',sans-serif; cursor:pointer; }
-  .reveal-btn:hover { background:#e6b930; }
-  .reveal-btn:disabled { opacity:0.4; cursor:not-allowed; background:var(--border); color:var(--text-muted); font-weight:400; font-size:13px; padding:10px 20px; }
+  .overlay { display:none; position:absolute; inset:0; align-items:center; justify-content:center; background:rgba(240,250,245,0.97); z-index:2; }
+  .overlay.show { display:flex; }
+  .cell-input { width:78px; height:28px; font-size:11px; text-align:center; border:1.5px solid var(--green-mid); border-radius:4px; background:white; font-family:'DM Sans',sans-serif; outline:none; color:var(--text); }
 
   .legend { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
   .legend-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--text-muted); }
   .ldot { width:11px; height:11px; border-radius:3px; flex-shrink:0; border:1px solid rgba(0,0,0,0.1); }
 
+  .print-btn { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:7px 14px; font-size:12px; cursor:pointer; color:var(--text); font-family:'DM Sans',sans-serif; display:inline-flex; align-items:center; gap:6px; margin-bottom:1rem; }
+  .print-btn:hover { background:var(--surface2); }
+
   .rules-box { background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius); padding:1rem 1.25rem; font-size:12px; color:var(--text-muted); line-height:1.7; }
   .rules-box strong { color:var(--text); }
 
-  @media (max-width:520px) {
-    table.sq .sq-cell { width:58px; height:52px; }
+  @media (max-width:540px) {
+    table.sq .sq-cell { width:60px; height:54px; }
     .cell-name { font-size:9px; }
+    .cell-hint { font-size:9px; }
   }
   @media print {
-    .setup-bar, .reveal-wrap { display:none !important; }
+    .setup-bar, .print-btn { display:none !important; }
     header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   }
 </style>
@@ -94,113 +96,107 @@
 <header>
   <div class="header-inner">
     <div class="header-badge">&#x26BD; Soccer Squares</div>
-    <h1>Match Day Squares Pool</h1>
-    <p>Click any square to claim it &mdash; numbers reveal when the grid is full</p>
+    <h1>Claim Your Square</h1>
+    <p>Click any empty square to enter your name &mdash; numbers lock when the grid is full</p>
   </div>
 </header>
 
 <div class="main">
 
   <div class="setup-bar">
-    <div class="field-g">
-      <label for="grid-size">Grid size</label>
-      <select id="grid-size">
+    <div class="fg">
+      <label for="gsz">Grid size</label>
+      <select id="gsz">
         <option value="5" selected>5&times;5 (25 squares)</option>
         <option value="10">10&times;10 (100 squares)</option>
       </select>
     </div>
-    <div class="field-g">
-      <label for="buyin-amt">Buy-in ($)</label>
-      <input type="number" id="buyin-amt" value="0" min="0" step="1">
+    <div class="fg">
+      <label for="bi">Buy-in ($)</label>
+      <input type="number" id="bi" value="0" min="0" step="1">
     </div>
-    <button class="start-btn" onclick="initGrid()">Start new pool</button>
-    <button class="reset-btn" onclick="resetGrid()">Reset</button>
+    <button class="start-btn" onclick="init()">New pool</button>
+    <button class="reset-btn" onclick="reset()">Reset</button>
   </div>
 
-  <div class="status-bar" id="status-bar"></div>
-
-  <div class="reveal-wrap" id="reveal-wrap"></div>
+  <div class="stat-bar" id="stat-bar"></div>
+  <div id="banner-area"></div>
 
   <div class="section-label">Grid &mdash; home team (columns) | away team (rows)</div>
   <div class="grid-outer">
-    <div class="axis-header">
-      <div style="width:33px;flex-shrink:0;"></div>
-      <div class="axis-title-h" id="axis-title">&larr; Home team score (last digit) &rarr;</div>
+    <div class="ax-header">
+      <div style="width:35px;flex-shrink:0;"></div>
+      <div class="ax-title">&larr; Home team score (last digit) &rarr;</div>
     </div>
     <table class="sq" id="sq-table"></table>
   </div>
 
-  <div class="section-label" style="margin-top:0.75rem" id="legend-label"></div>
+  <div id="print-wrap"></div>
+  <div class="section-label" id="legend-label"></div>
   <div class="legend" id="legend"></div>
-
   <div class="rules-box" id="rules-box"></div>
 
 </div>
 
 <script>
-const BG  = ["#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#F1EFE8","#E8EFF8","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE"];
-const FG  = ["#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#444441","#1a3a5c","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041"];
-const DOT = ["#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#5F5E5A","#1e4d7a","#534AB7","#0F6E56","#993C1D","#185FA5","#993556","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D"];
+const BG=["#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#F1EFE8","#E8EFF8","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE"];
+const FG=["#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#444441","#1a3a5c","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041"];
+const DOT=["#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#5F5E5A","#1e4d7a","#534AB7","#0F6E56","#993C1D","#185FA5","#993556","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D"];
 
-let gridSize = 5;
-let cells = [];
-let nameMap = {};
-let homeDigits = null;
-let awayDigits = null;
-let revealed = false;
+let gs=5, cells=[], nameMap={}, hd=null, ad=null, locked=false;
 
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-function getDigits(n){ return n===5?[0,1,2,3,4]:[0,1,2,3,4,5,6,7,8,9]; }
+function digs(n){return n===5?[0,1,2,3,4]:[0,1,2,3,4,5,6,7,8,9];}
+function colorIdx(name){if(nameMap[name]===undefined)nameMap[name]=Object.keys(nameMap).length;return nameMap[name];}
+function isFull(){return cells.every(c=>c.trim());}
 
-function initGrid(){
-  gridSize=parseInt(document.getElementById('grid-size').value);
-  cells=new Array(gridSize*gridSize).fill('');
-  nameMap={};homeDigits=null;awayDigits=null;revealed=false;
+function init(){
+  gs=parseInt(document.getElementById('gsz').value);
+  cells=new Array(gs*gs).fill('');
+  nameMap={};hd=null;ad=null;locked=false;
   render();
 }
 
-function resetGrid(){
-  cells=new Array(gridSize*gridSize).fill('');
-  nameMap={};homeDigits=null;awayDigits=null;revealed=false;
+function reset(){
+  cells=new Array(gs*gs).fill('');
+  nameMap={};hd=null;ad=null;locked=false;
   render();
 }
-
-function getColorIndex(name){
-  if(nameMap[name]===undefined) nameMap[name]=Object.keys(nameMap).length;
-  return nameMap[name];
-}
-
-function isFull(){ return cells.every(c=>c.trim()); }
 
 function render(){
   renderGrid();
-  renderStatus();
-  renderReveal();
+  renderStat();
+  renderBanner();
   renderLegend();
   renderRules();
+  renderPrint();
 }
 
 function renderGrid(){
-  const digits=getDigits(gridSize);
-  const tbd=!revealed;
+  const d=digs(gs);
   let h='<thead><tr><th class="corner ax"></th>';
-  digits.forEach((_,i)=>{ h+=`<th class="ax${tbd?' tbd':''}">${tbd?'?':homeDigits[i]}</th>`; });
+  d.forEach((_,i)=>{h+=`<th class="ax${locked?'':' tbd'}">${locked?hd[i]:'?'}</th>`;});
   h+='</tr></thead><tbody>';
-  for(let r=0;r<gridSize;r++){
-    h+=`<tr><th class="ax${tbd?' tbd':''}">${tbd?'?':awayDigits[r]}</th>`;
-    for(let c=0;c<gridSize;c++){
-      const idx=r*gridSize+c;
-      const name=cells[idx]||'';
+  for(let r=0;r<gs;r++){
+    h+=`<tr><th class="ax${locked?'':' tbd'}">${locked?ad[r]:'?'}</th>`;
+    for(let c=0;c<gs;c++){
+      const idx=r*gs+c, name=cells[idx]||'';
       if(name.trim()){
-        const ci=getColorIndex(name.trim());
-        h+=`<td class="sq-cell taken" style="background:${BG[ci%BG.length]};color:${FG[ci%FG.length]}">
+        const i=colorIdx(name.trim());
+        h+=`<td class="sq-cell taken" style="background:${BG[i%BG.length]};color:${FG[i%FG.length]}">
           <div class="cell-inner">
             <div class="cell-name">${name}</div>
-            ${revealed?`<div class="cell-coord">${homeDigits[c]}-${awayDigits[r]}</div>`:''}
-          </div></td>`;
+            ${locked?`<div class="cell-coord">${hd[c]}-${ad[r]}</div>`:''}
+          </div>
+        </td>`;
       } else {
-        h+=`<td class="sq-cell empty" onclick="claimCell(${idx})" id="cell-${idx}">
-          <div class="cell-inner"><div class="cell-hint">click to claim</div></div>
+        h+=`<td class="sq-cell empty" id="cell-${idx}" onclick="claim(${idx})">
+          <div class="cell-inner">
+            <div class="cell-hint">click to claim</div>
+          </div>
+          <div class="overlay" id="ov-${idx}">
+            <input class="cell-input" id="inp-${idx}" placeholder="Your name" maxlength="16">
+          </div>
         </td>`;
       }
     }
@@ -210,73 +206,75 @@ function renderGrid(){
   document.getElementById('sq-table').innerHTML=h;
 }
 
-function claimCell(idx){
-  if(cells[idx].trim()||revealed) return;
-  const td=document.getElementById('cell-'+idx);
-  td.innerHTML=`<div class="name-input-wrap"><input class="cell-input" id="inp-${idx}" placeholder="Your name" maxlength="16"></div>`;
+function claim(idx){
+  if(cells[idx].trim()||locked) return;
+  const ov=document.getElementById('ov-'+idx);
+  if(!ov) return;
+  ov.classList.add('show');
   const inp=document.getElementById('inp-'+idx);
   inp.focus();
-  inp.addEventListener('keydown',e=>{
-    if(e.key==='Enter'){confirmCell(idx,inp.value);}
-    if(e.key==='Escape'){render();}
-  });
-  inp.addEventListener('blur',()=>{ setTimeout(()=>{ if(document.getElementById('inp-'+idx)) render(); },180); });
+  inp.onkeydown=e=>{
+    if(e.key==='Enter') confirmClaim(idx, inp.value);
+    if(e.key==='Escape') ov.classList.remove('show');
+  };
+  inp.onblur=()=>setTimeout(()=>{ if(ov) ov.classList.remove('show'); },180);
 }
 
-function confirmCell(idx,val){
+function confirmClaim(idx, val){
   const name=val.trim();
-  if(!name){render();return;}
+  if(!name) return;
   cells[idx]=name;
-  getColorIndex(name);
+  colorIdx(name);
+  if(isFull()&&!locked){
+    const d=digs(gs);
+    hd=shuffle([...d]);
+    ad=shuffle([...d]);
+    locked=true;
+  }
   render();
 }
 
-function renderStatus(){
-  const taken=cells.filter(c=>c.trim()).length;
-  const total=gridSize*gridSize;
-  const buyin=parseFloat(document.getElementById('buyin-amt').value)||0;
-  const participants=Object.keys(nameMap).length;
-  const pool=participants*buyin;
-  let s=`<span>Squares filled: <span class="status-val">${taken} / ${total}</span></span>
-    <span>Participants: <span class="status-val">${participants}</span></span>`;
-  if(buyin>0) s+=`<span>Buy-in: <span class="status-val">$${buyin}</span></span><span>Est. pool: <span class="status-val">$${pool.toLocaleString()}</span></span>`;
-  document.getElementById('status-bar').innerHTML=s;
+function renderStat(){
+  const taken=cells.filter(c=>c.trim()).length, total=gs*gs;
+  const buyin=parseFloat(document.getElementById('bi').value)||0;
+  const ppl=Object.keys(nameMap).length;
+  let s=`<span>Squares filled: <span class="sv">${taken} / ${total}</span></span><span>Players: <span class="sv">${ppl}</span></span>`;
+  if(buyin>0) s+=`<span>Buy-in: <span class="sv">$${buyin}</span></span><span>Est. pool: <span class="sv">$${(ppl*buyin).toLocaleString()}</span></span>`;
+  document.getElementById('stat-bar').innerHTML=s;
 }
 
-function renderReveal(){
-  const full=isFull();
-  if(revealed){ document.getElementById('reveal-wrap').innerHTML=''; return; }
-  document.getElementById('reveal-wrap').innerHTML=
-    `<button class="reveal-btn" onclick="revealNumbers()" ${full?'':'disabled'}>
-      ${full?'Reveal numbers!':'Fill all squares to reveal numbers'}
-    </button>`;
+function renderBanner(){
+  document.getElementById('banner-area').innerHTML=locked
+    ?`<div class="banner">&#x1F512; All ${gs*gs} squares claimed &mdash; numbers are locked in! Find the winner by matching the home score's last digit (column) to the away score's last digit (row).</div>`
+    :'';
 }
 
-function revealNumbers(){
-  if(!isFull()) return;
-  const digits=getDigits(gridSize);
-  homeDigits=shuffle([...digits]);
-  awayDigits=shuffle([...digits]);
-  revealed=true;
-  render();
+function renderPrint(){
+  document.getElementById('print-wrap').innerHTML=locked
+    ?'<button class="print-btn" onclick="window.print()">&#128438; Print grid</button>'
+    :'';
 }
 
 function renderLegend(){
   const entries=Object.entries(nameMap);
-  if(!entries.length){ document.getElementById('legend').innerHTML=''; document.getElementById('legend-label').textContent=''; return; }
+  if(!entries.length){
+    document.getElementById('legend-label').textContent='';
+    document.getElementById('legend').innerHTML='';
+    return;
+  }
   document.getElementById('legend-label').textContent='Participants';
-  document.getElementById('legend').innerHTML=entries.map(([name,ci])=>
-    `<div class="legend-item"><div class="ldot" style="background:${BG[ci%BG.length]};border-color:${DOT[ci%DOT.length]}"></div>${name}</div>`
+  document.getElementById('legend').innerHTML=entries.map(([name,i])=>
+    `<div class="legend-item"><div class="ldot" style="background:${BG[i%BG.length]};border-color:${DOT[i%DOT.length]}"></div>${name}</div>`
   ).join('');
 }
 
 function renderRules(){
-  document.getElementById('rules-box').innerHTML=revealed
-    ? `<strong>Numbers are locked in.</strong> To find the winner at any checkpoint: take the last digit of the home team's score (column) and the last digit of the away team's score (row) — the square where they meet wins. Example: a 2&ndash;1 score means column 2, row 1.`
-    : `<strong>How it works:</strong> Click any square to write your name in it. Once every square is claimed, the <em>Reveal numbers!</em> button appears. Click it and the numbers along both axes are randomly assigned &mdash; no one knows their digits until the grid is full.`;
+  document.getElementById('rules-box').innerHTML=locked
+    ?`<strong>How to find the winner:</strong> Take the last digit of the home team's score &mdash; find that column. Take the last digit of the away team's score &mdash; find that row. The square where they meet wins. Example: a 2&ndash;1 score means column 2, row 1.`
+    :`<strong>How it works:</strong> Click any empty square and type your name to claim it. Once all ${gs*gs} squares are filled, the numbers along both axes are randomly assigned and permanently locked &mdash; no one knows their digits until the very last square is claimed.`;
 }
 
-initGrid();
+init();
 </script>
 </body>
 </html>
