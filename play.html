@@ -43,6 +43,20 @@
   .stat-bar { display:flex; flex-wrap:wrap; gap:16px; font-size:12px; color:var(--text-muted); margin-bottom:1rem; }
   .sv { font-weight:600; color:var(--text); }
 
+  .payout-row { display:flex; gap:10px; margin-bottom:1.25rem; flex-wrap:wrap; }
+  .payout-card { flex:1; min-width:140px; border-radius:var(--radius); padding:0.75rem 1rem; border:1px solid var(--border-light); }
+  .payout-card.ht { background:#fff9e1; border-color:#e8c94a; }
+  .payout-card.fn { background:var(--green-light); border-color:var(--green-mid); }
+  .payout-card-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
+  .payout-card.ht .payout-card-label { color:#7a6000; }
+  .payout-card.fn .payout-card-label { color:var(--green); }
+  .payout-card-amount { font-size:22px; font-weight:600; font-family:'DM Mono',monospace; }
+  .payout-card.ht .payout-card-amount { color:#4a3800; }
+  .payout-card.fn .payout-card-amount { color:var(--pitch); }
+  .payout-card-sub { font-size:11px; margin-top:2px; }
+  .payout-card.ht .payout-card-sub { color:#7a6000; }
+  .payout-card.fn .payout-card-sub { color:var(--green); }
+
   .banner { background:var(--green-light); border:1px solid var(--green-mid); border-radius:var(--radius); padding:0.75rem 1.25rem; font-size:13px; color:#085041; margin-bottom:1.25rem; font-weight:500; line-height:1.6; }
 
   .section-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-muted); margin-bottom:0.5rem; }
@@ -70,15 +84,13 @@
   .overlay.show { display:flex; }
   .cell-input { width:78px; height:28px; font-size:11px; text-align:center; border:1.5px solid var(--green-mid); border-radius:4px; background:white; font-family:'DM Sans',sans-serif; outline:none; color:var(--text); }
 
-  .legend { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:1rem; }
-  .legend-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--text-muted); }
-  .ldot { width:11px; height:11px; border-radius:3px; flex-shrink:0; border:1px solid rgba(0,0,0,0.1); }
-
   .print-btn { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:7px 14px; font-size:12px; cursor:pointer; color:var(--text); font-family:'DM Sans',sans-serif; display:inline-flex; align-items:center; gap:6px; margin-bottom:1rem; }
   .print-btn:hover { background:var(--surface2); }
 
-  .rules-box { background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius); padding:1rem 1.25rem; font-size:12px; color:var(--text-muted); line-height:1.7; }
+  .rules-box { background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius); padding:1rem 1.25rem; font-size:12px; color:var(--text-muted); line-height:1.8; }
   .rules-box strong { color:var(--text); }
+  .rules-box p { margin-bottom:0.6rem; }
+  .rules-box p:last-child { margin-bottom:0; }
 
   @media (max-width:540px) {
     table.sq .sq-cell { width:60px; height:54px; }
@@ -113,13 +125,22 @@
     </div>
     <div class="fg">
       <label for="bi">Buy-in ($)</label>
-      <input type="number" id="bi" value="0" min="0" step="1">
+      <input type="number" id="bi" value="0" min="0" step="1" oninput="renderPayouts()">
+    </div>
+    <div class="fg">
+      <label for="ht-pct">Halftime %</label>
+      <input type="number" id="ht-pct" value="25" min="0" max="100" step="1" oninput="renderPayouts()">
+    </div>
+    <div class="fg">
+      <label for="fn-pct">Final score %</label>
+      <input type="number" id="fn-pct" value="75" min="0" max="100" step="1" oninput="renderPayouts()">
     </div>
     <button class="start-btn" onclick="init()">New pool</button>
     <button class="reset-btn" onclick="reset()">Reset</button>
   </div>
 
   <div class="stat-bar" id="stat-bar"></div>
+  <div id="payout-area"></div>
   <div id="banner-area"></div>
 
   <div class="section-label">Grid &mdash; home team (columns) | away team (rows)</div>
@@ -132,8 +153,6 @@
   </div>
 
   <div id="print-wrap"></div>
-  <div class="section-label" id="legend-label"></div>
-  <div class="legend" id="legend"></div>
   <div class="rules-box" id="rules-box"></div>
 
 </div>
@@ -141,7 +160,6 @@
 <script>
 const BG=["#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#F1EFE8","#E8EFF8","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE"];
 const FG=["#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#444441","#1a3a5c","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041"];
-const DOT=["#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#5F5E5A","#1e4d7a","#534AB7","#0F6E56","#993C1D","#185FA5","#993556","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D"];
 
 let gs=5, cells=[], nameMap={}, hd=null, ad=null, locked=false;
 
@@ -166,8 +184,8 @@ function reset(){
 function render(){
   renderGrid();
   renderStat();
+  renderPayouts();
   renderBanner();
-  renderLegend();
   renderRules();
   renderPrint();
 }
@@ -191,9 +209,7 @@ function renderGrid(){
         </td>`;
       } else {
         h+=`<td class="sq-cell empty" id="cell-${idx}" onclick="claim(${idx})">
-          <div class="cell-inner">
-            <div class="cell-hint">click to claim</div>
-          </div>
+          <div class="cell-inner"><div class="cell-hint">click to claim</div></div>
           <div class="overlay" id="ov-${idx}">
             <input class="cell-input" id="inp-${idx}" placeholder="Your name" maxlength="16">
           </div>
@@ -214,13 +230,13 @@ function claim(idx){
   const inp=document.getElementById('inp-'+idx);
   inp.focus();
   inp.onkeydown=e=>{
-    if(e.key==='Enter') confirmClaim(idx, inp.value);
+    if(e.key==='Enter') confirmClaim(idx,inp.value);
     if(e.key==='Escape') ov.classList.remove('show');
   };
   inp.onblur=()=>setTimeout(()=>{ if(ov) ov.classList.remove('show'); },180);
 }
 
-function confirmClaim(idx, val){
+function confirmClaim(idx,val){
   const name=val.trim();
   if(!name) return;
   cells[idx]=name;
@@ -243,6 +259,30 @@ function renderStat(){
   document.getElementById('stat-bar').innerHTML=s;
 }
 
+function renderPayouts(){
+  const buyin=parseFloat(document.getElementById('bi').value)||0;
+  const ppl=Object.keys(nameMap).length;
+  const pool=ppl*buyin;
+  const htPct=parseFloat(document.getElementById('ht-pct').value)||0;
+  const fnPct=parseFloat(document.getElementById('fn-pct').value)||0;
+  const htAmt=Math.round(pool*htPct/100);
+  const fnAmt=Math.round(pool*fnPct/100);
+  if(buyin<=0){ document.getElementById('payout-area').innerHTML=''; return; }
+  document.getElementById('payout-area').innerHTML=`
+    <div class="payout-row">
+      <div class="payout-card ht">
+        <div class="payout-card-label">&#x23F1; Halftime</div>
+        <div class="payout-card-amount">$${htAmt.toLocaleString()}</div>
+        <div class="payout-card-sub">${htPct}% of pool</div>
+      </div>
+      <div class="payout-card fn">
+        <div class="payout-card-label">&#x1F3C6; Final score</div>
+        <div class="payout-card-amount">$${fnAmt.toLocaleString()}</div>
+        <div class="payout-card-sub">${fnPct}% of pool</div>
+      </div>
+    </div>`;
+}
+
 function renderBanner(){
   document.getElementById('banner-area').innerHTML=locked
     ?`<div class="banner">&#x1F512; All ${gs*gs} squares claimed &mdash; numbers are locked in! Find the winner by matching the home score's last digit (column) to the away score's last digit (row).</div>`
@@ -255,23 +295,13 @@ function renderPrint(){
     :'';
 }
 
-function renderLegend(){
-  const entries=Object.entries(nameMap);
-  if(!entries.length){
-    document.getElementById('legend-label').textContent='';
-    document.getElementById('legend').innerHTML='';
-    return;
-  }
-  document.getElementById('legend-label').textContent='Participants';
-  document.getElementById('legend').innerHTML=entries.map(([name,i])=>
-    `<div class="legend-item"><div class="ldot" style="background:${BG[i%BG.length]};border-color:${DOT[i%DOT.length]}"></div>${name}</div>`
-  ).join('');
-}
-
 function renderRules(){
-  document.getElementById('rules-box').innerHTML=locked
-    ?`<strong>How to find the winner:</strong> Take the last digit of the home team's score &mdash; find that column. Take the last digit of the away team's score &mdash; find that row. The square where they meet wins. Example: a 2&ndash;1 score means column 2, row 1.`
-    :`<strong>How it works:</strong> Click any empty square and type your name to claim it. Once all ${gs*gs} squares are filled, the numbers along both axes are randomly assigned and permanently locked &mdash; no one knows their digits until the very last square is claimed.`;
+  const pre=locked
+    ?`<p><strong>How to find the winner:</strong> Take the last digit of the home team's score &mdash; find that column. Take the last digit of the away team's score &mdash; find that row. The square where they meet wins. Example: a 2&ndash;1 score means column 2, row 1.</p>`
+    :`<p><strong>How it works:</strong> Click any empty square and type your name to claim it. Once all ${gs*gs} squares are filled, the numbers along both axes are randomly assigned and permanently locked &mdash; no one knows their digits until the very last square is claimed.</p>`;
+  document.getElementById('rules-box').innerHTML=pre+
+    `<p><strong>High-scoring rule:</strong> If a team scores more than four goals, then 4 is the winning number along either axis.</p>
+     <p><strong>Penalty kicks rule:</strong> If the game goes to penalty kicks, then the winning number will be plus one for the winning team at the end of regulation, regardless of the number of rounds of penalty kicks.</p>`;
 }
 
 init();
