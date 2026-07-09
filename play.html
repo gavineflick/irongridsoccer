@@ -80,9 +80,12 @@
   .cell-hint { font-size:10px; color:var(--text-hint); }
   .cell-coord { font-size:9px; opacity:0.4; font-family:'DM Mono',monospace; margin-top:2px; }
 
-  .overlay { display:none; position:absolute; inset:0; align-items:center; justify-content:center; background:rgba(240,250,245,0.97); z-index:2; }
+  .overlay { display:none; position:absolute; inset:0; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:rgba(240,250,245,0.97); z-index:2; padding:6px; }
   .overlay.show { display:flex; }
   .cell-input { width:78px; height:28px; font-size:11px; text-align:center; border:1.5px solid var(--green-mid); border-radius:4px; background:white; font-family:'DM Sans',sans-serif; outline:none; color:var(--text); }
+  .cell-input.error { border-color:var(--red); }
+  .cell-error { font-size:9px; color:var(--red); line-height:1.3; text-align:center; max-width:82px; display:none; }
+  .cell-error.show { display:block; }
 
   .print-btn { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:7px 14px; font-size:12px; cursor:pointer; color:var(--text); font-family:'DM Sans',sans-serif; display:inline-flex; align-items:center; gap:6px; margin-bottom:1rem; }
   .print-btn:hover { background:var(--surface2); }
@@ -132,7 +135,7 @@
       <input type="number" id="ht-pct" value="25" min="0" max="100" step="1" oninput="renderPayouts()">
     </div>
     <div class="fg">
-      <label for="fn-pct">Final score %</label>
+      <label for="fn-pct">Full-time %</label>
       <input type="number" id="fn-pct" value="75" min="0" max="100" step="1" oninput="renderPayouts()">
     </div>
     <button class="start-btn" onclick="init()">New pool</button>
@@ -167,6 +170,7 @@ function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.fl
 function digs(n){return n===5?[0,1,2,3,4]:[0,1,2,3,4,5,6,7,8,9];}
 function colorIdx(name){if(nameMap[name]===undefined)nameMap[name]=Object.keys(nameMap).length;return nameMap[name];}
 function isFull(){return cells.every(c=>c.trim());}
+function nameTaken(name){return Object.keys(nameMap).some(n=>n.toLowerCase()===name.toLowerCase());}
 
 function init(){
   gs=parseInt(document.getElementById('gsz').value);
@@ -211,7 +215,8 @@ function renderGrid(){
         h+=`<td class="sq-cell empty" id="cell-${idx}" onclick="claim(${idx})">
           <div class="cell-inner"><div class="cell-hint">click to claim</div></div>
           <div class="overlay" id="ov-${idx}">
-            <input class="cell-input" id="inp-${idx}" placeholder="Your name" maxlength="16">
+            <input class="cell-input" id="inp-${idx}" placeholder="Your name" maxlength="20">
+            <span class="cell-error" id="err-${idx}">Name taken &mdash; please use a different name</span>
           </div>
         </td>`;
       }
@@ -233,12 +238,24 @@ function claim(idx){
     if(e.key==='Enter') confirmClaim(idx,inp.value);
     if(e.key==='Escape') ov.classList.remove('show');
   };
-  inp.onblur=()=>setTimeout(()=>{ if(ov) ov.classList.remove('show'); },180);
+  inp.oninput=()=>{
+    inp.classList.remove('error');
+    const errEl=document.getElementById('err-'+idx);
+    if(errEl) errEl.classList.remove('show');
+  };
+  inp.onblur=()=>setTimeout(()=>{ if(ov&&!inp.classList.contains('error')) ov.classList.remove('show'); },200);
 }
 
 function confirmClaim(idx,val){
   const name=val.trim();
   if(!name) return;
+  if(nameTaken(name)){
+    const inp=document.getElementById('inp-'+idx);
+    const errEl=document.getElementById('err-'+idx);
+    if(inp){ inp.classList.add('error'); inp.select(); }
+    if(errEl) errEl.classList.add('show');
+    return;
+  }
   cells[idx]=name;
   colorIdx(name);
   if(isFull()&&!locked){
@@ -276,9 +293,9 @@ function renderPayouts(){
         <div class="payout-card-sub">${htPct}% of pool</div>
       </div>
       <div class="payout-card fn">
-        <div class="payout-card-label">&#x1F3C6; Final score</div>
+        <div class="payout-card-label">&#x1F3C6; Full-time</div>
         <div class="payout-card-amount">$${fnAmt.toLocaleString()}</div>
-        <div class="payout-card-sub">${fnPct}% of pool</div>
+        <div class="payout-card-sub">${fnPct}% of pool &mdash; split equally if tied at end of regular time</div>
       </div>
     </div>`;
 }
@@ -300,7 +317,8 @@ function renderRules(){
     ?`<p><strong>How to find the winner:</strong> Take the last digit of the home team's score &mdash; find that column. Take the last digit of the away team's score &mdash; find that row. The square where they meet wins. Example: a 2&ndash;1 score means column 2, row 1.</p>`
     :`<p><strong>How it works:</strong> Click any empty square and type your name to claim it. Once all ${gs*gs} squares are filled, the numbers along both axes are randomly assigned and permanently locked &mdash; no one knows their digits until the very last square is claimed.</p>`;
   document.getElementById('rules-box').innerHTML=pre+
-    `<p><strong>High-scoring rule:</strong> If a team scores more than four goals, then 4 is the winning number along either axis.</p>
+    `<p><strong>Tied at full-time:</strong> If the game is tied at the end of regular time, there will be an additional payout for the score at the end of regular time. The regular time and full-time scores will split the full-time payout equally.</p>
+     <p><strong>High-scoring rule:</strong> If a team scores more than four goals, then 4 is the winning number along either axis.</p>
      <p><strong>Penalty kicks rule:</strong> If the game goes to penalty kicks, then the winning number will be plus one for the winning team at the end of regulation, regardless of the number of rounds of penalty kicks.</p>`;
 }
 
