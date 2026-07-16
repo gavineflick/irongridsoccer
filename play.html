@@ -16,7 +16,6 @@
     --radius: 8px; --red: #c0392b;
   }
   body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
   header { background: var(--pitch); color: white; padding: 2rem 2rem 1.75rem; position: relative; overflow: hidden; }
   header::before { content:''; position:absolute; top:-50px; right:-50px; width:220px; height:220px; border:2px solid rgba(255,255,255,0.07); border-radius:50%; }
   header::after { content:''; position:absolute; bottom:-70px; left:38%; width:160px; height:160px; border:2px solid rgba(255,255,255,0.05); border-radius:50%; }
@@ -24,28 +23,21 @@
   .header-badge { display:inline-block; background:var(--accent); color:#1a1a1a; font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; padding:3px 10px; border-radius:4px; margin-bottom:10px; }
   header h1 { font-size: clamp(1.5rem,4vw,2.2rem); font-weight:600; letter-spacing:-0.02em; line-height:1.15; margin-bottom:6px; }
   header p { font-size:13px; opacity:0.6; font-family:'DM Mono',monospace; }
-
   .main { max-width: 960px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
-
   .admin-bar { display:flex; gap:12px; align-items:flex-end; margin-bottom:0.5rem; flex-wrap:wrap; background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius); padding:1rem 1.25rem; }
   .fg { display:flex; flex-direction:column; gap:4px; }
   .fg label { font-size:12px; color:var(--text-muted); }
-  .fg select, .fg input[type=number], .fg input[type=password] { height:34px; border:1px solid var(--border); border-radius:var(--radius); font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text); background:var(--surface); padding:0 10px; outline:none; }
+  .fg select, .fg input[type=number] { height:34px; border:1px solid var(--border); border-radius:var(--radius); font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text); background:var(--surface); padding:0 10px; outline:none; }
   .fg select { width:160px; }
   .fg input[type=number] { width:100px; }
-  .fg input[type=password] { width:130px; }
   .fg select:focus, .fg input:focus { border-color:var(--green-mid); }
-
   .start-btn { background:var(--pitch); color:white; border:none; border-radius:var(--radius); padding:8px 18px; font-size:13px; font-weight:600; font-family:'DM Sans',sans-serif; cursor:pointer; height:34px; }
   .start-btn:hover { background:var(--green); }
   .reset-btn { background:var(--surface); border:1px solid var(--red); border-radius:var(--radius); padding:8px 14px; font-size:12px; font-family:'DM Sans',sans-serif; cursor:pointer; color:var(--red); height:34px; }
   .reset-btn:hover { background:#fdf0ef; }
-
   .admin-note { font-size:11px; color:var(--text-hint); margin-bottom:1.25rem; }
-
   .stat-bar { display:flex; flex-wrap:wrap; gap:16px; font-size:12px; color:var(--text-muted); margin-bottom:1rem; }
   .sv { font-weight:600; color:var(--text); }
-
   .payout-row { display:flex; gap:10px; margin-bottom:1.25rem; flex-wrap:wrap; }
   .payout-card { flex:1; min-width:140px; border-radius:var(--radius); padding:0.75rem 1rem; border:1px solid var(--border-light); }
   .payout-card.ht { background:#fff9e1; border-color:#e8c94a; }
@@ -59,16 +51,12 @@
   .payout-card-sub { font-size:11px; margin-top:2px; }
   .payout-card.ht .payout-card-sub { color:#7a6000; }
   .payout-card.fn .payout-card-sub { color:var(--green); }
-
   .banner { background:var(--green-light); border:1px solid var(--green-mid); border-radius:var(--radius); padding:0.75rem 1.25rem; font-size:13px; color:#085041; margin-bottom:1.25rem; font-weight:500; line-height:1.6; }
   .loading-banner { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); padding:0.75rem 1.25rem; font-size:13px; color:var(--text-muted); margin-bottom:1.25rem; }
-
   .section-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-muted); margin-bottom:0.5rem; }
-
   .grid-outer { overflow-x:auto; margin-bottom:1rem; }
   .ax-header { display:flex; margin-bottom:3px; }
   .ax-title { flex:1; text-align:center; font-size:11px; color:var(--text-hint); }
-
   table.sq { border-collapse:collapse; }
   table.sq td, table.sq th { border:1px solid var(--border-light); text-align:center; }
   table.sq .corner { border:none; background:transparent; width:34px; height:34px; }
@@ -78,40 +66,34 @@
   table.sq .sq-cell.empty { background:var(--surface); }
   table.sq .sq-cell.empty:hover { background:#f0faf5; }
   table.sq .sq-cell.taken { cursor:default; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-
   .cell-inner { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; padding:4px; }
   .cell-name { font-size:11px; font-weight:600; line-height:1.3; }
   .cell-hint { font-size:10px; color:var(--text-hint); }
   .cell-coord { font-size:9px; opacity:0.4; font-family:'DM Mono',monospace; margin-top:2px; }
-
   .overlay { display:none; position:absolute; inset:0; flex-direction:column; align-items:center; justify-content:center; gap:4px; background:rgba(240,250,245,0.97); z-index:2; padding:6px; }
   .overlay.show { display:flex; }
   .cell-input { width:78px; height:28px; font-size:11px; text-align:center; border:1.5px solid var(--green-mid); border-radius:4px; background:white; font-family:'DM Sans',sans-serif; outline:none; color:var(--text); }
   .cell-input.error { border-color:var(--red); }
   .cell-error { font-size:9px; color:var(--red); line-height:1.3; text-align:center; max-width:82px; display:none; }
   .cell-error.show { display:block; }
-
   .print-btn { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:7px 14px; font-size:12px; cursor:pointer; color:var(--text); font-family:'DM Sans',sans-serif; display:inline-flex; align-items:center; gap:6px; margin-bottom:1rem; }
   .print-btn:hover { background:var(--surface2); }
-
   .rules-box { background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius); padding:1rem 1.25rem; font-size:12px; color:var(--text-muted); line-height:1.8; }
   .rules-box strong { color:var(--text); }
   .rules-box p { margin-bottom:0.6rem; }
   .rules-box p:last-child { margin-bottom:0; }
-
   .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:100; align-items:center; justify-content:center; }
   .modal-overlay.show { display:flex; }
   .modal { background:var(--surface); border-radius:var(--radius); padding:1.5rem; width:320px; box-shadow:0 8px 32px rgba(0,0,0,0.2); }
   .modal h3 { font-size:15px; margin-bottom:0.75rem; }
   .modal p { font-size:12px; color:var(--text-muted); margin-bottom:1rem; line-height:1.5; }
-  .modal input { width:100%; height:36px; border:1px solid var(--border); border-radius:var(--radius); padding:0 10px; font-size:13px; font-family:'DM Sans',sans-serif; outline:none; margin-bottom:0.75rem; }
-  .modal input:focus { border-color:var(--green-mid); }
+  .modal input[type=password] { width:100%; height:36px; border:1px solid var(--border); border-radius:var(--radius); padding:0 10px; font-size:13px; font-family:'DM Sans',sans-serif; outline:none; margin-bottom:0.75rem; }
+  .modal input[type=password]:focus { border-color:var(--green-mid); }
   .modal-err { font-size:12px; color:var(--red); margin-bottom:0.5rem; display:none; }
   .modal-err.show { display:block; }
   .modal-btns { display:flex; gap:8px; justify-content:flex-end; }
   .modal-cancel { background:none; border:1px solid var(--border); border-radius:var(--radius); padding:7px 14px; font-size:12px; cursor:pointer; font-family:'DM Sans',sans-serif; }
   .modal-confirm { background:var(--pitch); color:white; border:none; border-radius:var(--radius); padding:7px 14px; font-size:12px; cursor:pointer; font-family:'DM Sans',sans-serif; font-weight:600; }
-
   @media (max-width:540px) {
     table.sq .sq-cell { width:60px; height:54px; }
     .cell-name { font-size:9px; }
@@ -135,8 +117,8 @@
 
 <div class="modal-overlay" id="admin-modal">
   <div class="modal">
-    <h3>Admin access required</h3>
-    <p>Enter the admin password to start a new pool or reset the current grid.</p>
+    <h3 id="modal-title">Admin access required</h3>
+    <p id="modal-desc">Enter the admin password to continue.</p>
     <input type="password" id="modal-pw" placeholder="Admin password">
     <div class="modal-err" id="modal-err">Incorrect password. Please try again.</div>
     <div class="modal-btns">
@@ -147,7 +129,6 @@
 </div>
 
 <div class="main">
-
   <div class="admin-bar">
     <div class="fg">
       <label for="gsz">Grid size</label>
@@ -176,7 +157,6 @@
   <div class="stat-bar" id="stat-bar"></div>
   <div id="payout-area"></div>
   <div id="banner-area"></div>
-
   <div id="loading-area"><div class="loading-banner">&#x23F3; Loading grid&hellip;</div></div>
 
   <div id="game-area" style="display:none">
@@ -191,7 +171,6 @@
     <div id="print-wrap"></div>
     <div class="rules-box" id="rules-box"></div>
   </div>
-
 </div>
 
 <script type="module">
@@ -208,16 +187,17 @@
     appId: "1:5716922379:web:033ab801a02dccc1b1f70e"
   };
 
+  const ADMIN_PASSWORD = "gavinflick";
+
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const gameRef = ref(db, 'pool');
 
-  const ADMIN_PASSWORD = "gavinflick";
-
   const BG=["#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#F1EFE8","#E8EFF8","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE"];
   const FG=["#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#444441","#1a3a5c","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041"];
 
-  let state = { gs:5, cells:[], nameMap:{}, hd:null, ad:null, locked:false, buyin:0, htPct:25, fnPct:75 };
+  // Single source of truth — always read from Firebase
+  let state = null;
   let pendingAction = null;
 
   function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
@@ -227,12 +207,12 @@
   function nameTaken(name){return Object.keys(state.nameMap).some(n=>n.toLowerCase()===name.toLowerCase());}
 
   function saveState(){
-    set(gameRef, {
+    return set(gameRef, {
       gs: state.gs,
       cells: state.cells,
       nameMap: state.nameMap,
-      hd: state.hd,
-      ad: state.ad,
+      hd: state.hd || null,
+      ad: state.ad || null,
       locked: state.locked,
       buyin: state.buyin,
       htPct: state.htPct,
@@ -240,33 +220,51 @@
     });
   }
 
-  function initNew(){
-    const gs = parseInt(document.getElementById('gsz').value);
-    const buyin = parseFloat(document.getElementById('bi').value)||0;
-    const htPct = parseFloat(document.getElementById('ht-pct').value)||25;
-    const fnPct = parseFloat(document.getElementById('fn-pct').value)||75;
-    state = { gs, cells:new Array(gs*gs).fill(''), nameMap:{}, hd:null, ad:null, locked:false, buyin, htPct, fnPct };
+  function getInputs(){
+    return {
+      gs: parseInt(document.getElementById('gsz').value) || 5,
+      buyin: parseFloat(document.getElementById('bi').value) || 0,
+      htPct: parseFloat(document.getElementById('ht-pct').value) || 25,
+      fnPct: parseFloat(document.getElementById('fn-pct').value) || 75
+    };
+  }
+
+  function doNew(){
+    const inp = getInputs();
+    state = {
+      gs: inp.gs,
+      cells: new Array(inp.gs * inp.gs).fill(''),
+      nameMap: {},
+      hd: null,
+      ad: null,
+      locked: false,
+      buyin: inp.buyin,
+      htPct: inp.htPct,
+      fnPct: inp.fnPct
+    };
     saveState();
   }
 
-  function resetGrid(){
-    state.buyin = parseFloat(document.getElementById('bi').value)||0;
-    state.htPct = parseFloat(document.getElementById('ht-pct').value)||25;
-    state.fnPct = parseFloat(document.getElementById('fn-pct').value)||75;
-    state.cells = new Array(state.gs*state.gs).fill('');
+  function doReset(){
+    const inp = getInputs();
+    state.cells = new Array(state.gs * state.gs).fill('');
     state.nameMap = {};
     state.hd = null;
     state.ad = null;
     state.locked = false;
+    state.buyin = inp.buyin;
+    state.htPct = inp.htPct;
+    state.fnPct = inp.fnPct;
     saveState();
   }
 
+  // Admin modal
   window.requireAdmin = function(action){
     pendingAction = action;
-    document.getElementById('modal-pw').value='';
+    document.getElementById('modal-pw').value = '';
     document.getElementById('modal-err').classList.remove('show');
     document.getElementById('admin-modal').classList.add('show');
-    setTimeout(()=>document.getElementById('modal-pw').focus(),100);
+    setTimeout(()=>document.getElementById('modal-pw').focus(), 100);
   };
 
   window.closeModal = function(){
@@ -278,42 +276,44 @@
     const pw = document.getElementById('modal-pw').value;
     if(pw === ADMIN_PASSWORD){
       closeModal();
-      if(pendingAction==='new') initNew();
-      else if(pendingAction==='reset') resetGrid();
+      if(pendingAction === 'new') doNew();
+      else if(pendingAction === 'reset') doReset();
     } else {
       document.getElementById('modal-err').classList.add('show');
-      document.getElementById('modal-pw').value='';
+      document.getElementById('modal-pw').value = '';
       document.getElementById('modal-pw').focus();
     }
   };
 
-  document.getElementById('modal-pw').addEventListener('keydown', e=>{
-    if(e.key==='Enter') window.checkPassword();
-    if(e.key==='Escape') window.closeModal();
+  document.getElementById('modal-pw').addEventListener('keydown', e => {
+    if(e.key === 'Enter') window.checkPassword();
+    if(e.key === 'Escape') window.closeModal();
   });
 
-  onValue(gameRef, (snapshot)=>{
-    document.getElementById('loading-area').style.display='none';
-    document.getElementById('game-area').style.display='block';
+  // Listen to Firebase — this is the only place state is set from saved data
+  onValue(gameRef, (snapshot) => {
+    document.getElementById('loading-area').style.display = 'none';
+    document.getElementById('game-area').style.display = 'block';
     const data = snapshot.val();
-    if(data){
+    if(data && data.gs){
       state = {
-        gs: data.gs||5,
-        cells: data.cells||new Array((data.gs||5)*(data.gs||5)).fill(''),
-        nameMap: data.nameMap||{},
-        hd: data.hd||null,
-        ad: data.ad||null,
-        locked: data.locked||false,
-        buyin: data.buyin||0,
-        htPct: data.htPct||25,
-        fnPct: data.fnPct||75
+        gs: data.gs,
+        cells: data.cells || new Array(data.gs * data.gs).fill(''),
+        nameMap: data.nameMap || {},
+        hd: data.hd || null,
+        ad: data.ad || null,
+        locked: data.locked || false,
+        buyin: typeof data.buyin === 'number' ? data.buyin : 0,
+        htPct: typeof data.htPct === 'number' ? data.htPct : 25,
+        fnPct: typeof data.fnPct === 'number' ? data.fnPct : 75
       };
-      // Sync inputs to saved values
+      // Sync admin bar inputs to match saved state
+      document.getElementById('gsz').value = state.gs;
       document.getElementById('bi').value = state.buyin;
       document.getElementById('ht-pct').value = state.htPct;
       document.getElementById('fn-pct').value = state.fnPct;
-      document.getElementById('gsz').value = state.gs;
     } else {
+      // Nothing in Firebase yet — blank slate
       state = { gs:5, cells:new Array(25).fill(''), nameMap:{}, hd:null, ad:null, locked:false, buyin:0, htPct:25, fnPct:75 };
     }
     renderAll();
@@ -329,24 +329,25 @@
   }
 
   function renderGrid(){
-    const d=digs(state.gs);
-    let h='<thead><tr><th class="corner ax"></th>';
-    d.forEach((_,i)=>{h+=`<th class="ax${state.locked?'':' tbd'}">${state.locked?state.hd[i]:'?'}</th>`;});
-    h+='</tr></thead><tbody>';
-    for(let r=0;r<state.gs;r++){
-      h+=`<tr><th class="ax${state.locked?'':' tbd'}">${state.locked?state.ad[r]:'?'}</th>`;
-      for(let c=0;c<state.gs;c++){
-        const idx=r*state.gs+c, name=(state.cells[idx]||'');
+    const d = digs(state.gs);
+    let h = '<thead><tr><th class="corner ax"></th>';
+    d.forEach((_,i) => { h += `<th class="ax${state.locked ? '' : ' tbd'}">${state.locked ? state.hd[i] : '?'}</th>`; });
+    h += '</tr></thead><tbody>';
+    for(let r = 0; r < state.gs; r++){
+      h += `<tr><th class="ax${state.locked ? '' : ' tbd'}">${state.locked ? state.ad[r] : '?'}</th>`;
+      for(let c = 0; c < state.gs; c++){
+        const idx = r * state.gs + c;
+        const name = (state.cells[idx] || '');
         if(name.trim()){
-          const i=colorIdx(name.trim());
-          h+=`<td class="sq-cell taken" style="background:${BG[i%BG.length]};color:${FG[i%FG.length]}">
+          const i = colorIdx(name.trim());
+          h += `<td class="sq-cell taken" style="background:${BG[i%BG.length]};color:${FG[i%FG.length]}">
             <div class="cell-inner">
               <div class="cell-name">${name}</div>
-              ${state.locked?`<div class="cell-coord">${state.hd[c]}-${state.ad[r]}</div>`:''}
+              ${state.locked ? `<div class="cell-coord">${state.hd[c]}-${state.ad[r]}</div>` : ''}
             </div>
           </td>`;
         } else {
-          h+=`<td class="sq-cell empty" id="cell-${idx}" onclick="claimCell(${idx})">
+          h += `<td class="sq-cell empty" id="cell-${idx}" onclick="claimCell(${idx})">
             <div class="cell-inner"><div class="cell-hint">click to claim</div></div>
             <div class="overlay" id="ov-${idx}">
               <input class="cell-input" id="inp-${idx}" placeholder="Your name" maxlength="20">
@@ -355,68 +356,69 @@
           </td>`;
         }
       }
-      h+='</tr>';
+      h += '</tr>';
     }
-    h+='</tbody>';
-    document.getElementById('sq-table').innerHTML=h;
+    h += '</tbody>';
+    document.getElementById('sq-table').innerHTML = h;
   }
 
   window.claimCell = function(idx){
-    if((state.cells[idx]&&state.cells[idx].trim())||state.locked) return;
-    const ov=document.getElementById('ov-'+idx);
+    if((state.cells[idx] && state.cells[idx].trim()) || state.locked) return;
+    const ov = document.getElementById('ov-' + idx);
     if(!ov) return;
     ov.classList.add('show');
-    const inp=document.getElementById('inp-'+idx);
+    const inp = document.getElementById('inp-' + idx);
     inp.focus();
-    inp.onkeydown=e=>{
-      if(e.key==='Enter') confirmClaim(idx,inp.value);
-      if(e.key==='Escape') ov.classList.remove('show');
+    inp.onkeydown = e => {
+      if(e.key === 'Enter') confirmClaim(idx, inp.value);
+      if(e.key === 'Escape') ov.classList.remove('show');
     };
-    inp.oninput=()=>{
+    inp.oninput = () => {
       inp.classList.remove('error');
-      const errEl=document.getElementById('err-'+idx);
+      const errEl = document.getElementById('err-' + idx);
       if(errEl) errEl.classList.remove('show');
     };
-    inp.onblur=()=>setTimeout(()=>{ if(ov&&!inp.classList.contains('error')) ov.classList.remove('show'); },200);
+    inp.onblur = () => setTimeout(() => { if(ov && !inp.classList.contains('error')) ov.classList.remove('show'); }, 200);
   };
 
-  function confirmClaim(idx,val){
-    const name=val.trim();
+  function confirmClaim(idx, val){
+    const name = val.trim();
     if(!name) return;
     if(nameTaken(name)){
-      const inp=document.getElementById('inp-'+idx);
-      const errEl=document.getElementById('err-'+idx);
-      if(inp){inp.classList.add('error');inp.select();}
+      const inp = document.getElementById('inp-' + idx);
+      const errEl = document.getElementById('err-' + idx);
+      if(inp){ inp.classList.add('error'); inp.select(); }
       if(errEl) errEl.classList.add('show');
       return;
     }
-    state.cells[idx]=name;
+    state.cells[idx] = name;
     colorIdx(name);
-    if(isFull()&&!state.locked){
-      const d=digs(state.gs);
-      state.hd=shuffle([...d]);
-      state.ad=shuffle([...d]);
-      state.locked=true;
+    if(isFull() && !state.locked){
+      const d = digs(state.gs);
+      state.hd = shuffle([...d]);
+      state.ad = shuffle([...d]);
+      state.locked = true;
     }
     saveState();
   }
 
   function renderStat(){
-    const taken=state.cells.filter(c=>c&&c.trim()).length, total=state.gs*state.gs;
-    const ppl=Object.keys(state.nameMap).length;
-    const pool=ppl*state.buyin;
-    let s=`<span>Squares filled: <span class="sv">${taken} / ${total}</span></span><span>Players: <span class="sv">${ppl}</span></span>`;
-    if(state.buyin>0) s+=`<span>Buy-in: <span class="sv">$${state.buyin}</span></span><span>Est. pool: <span class="sv">$${pool.toLocaleString()}</span></span>`;
-    document.getElementById('stat-bar').innerHTML=s;
+    const taken = state.cells.filter(c => c && c.trim()).length;
+    const total = state.gs * state.gs;
+    const ppl = Object.keys(state.nameMap).length;
+    const pool = ppl * state.buyin;
+    let s = `<span>Squares filled: <span class="sv">${taken} / ${total}</span></span><span>Players: <span class="sv">${ppl}</span></span>`;
+    if(state.buyin > 0) s += `<span>Buy-in: <span class="sv">$${state.buyin}</span></span><span>Est. pool: <span class="sv">$${pool.toLocaleString()}</span></span>`;
+    document.getElementById('stat-bar').innerHTML = s;
   }
 
   function renderPayouts(){
-    const ppl=Object.keys(state.nameMap).length;
-    const pool=ppl*state.buyin;
-    const htAmt=Math.round(pool*state.htPct/100);
-    const fnAmt=Math.round(pool*state.fnPct/100);
-    if(state.buyin<=0){document.getElementById('payout-area').innerHTML='';return;}
-    document.getElementById('payout-area').innerHTML=`
+    const ppl = Object.keys(state.nameMap).length;
+    const pool = ppl * state.buyin;
+    const htAmt = Math.round(pool * state.htPct / 100);
+    const fnAmt = Math.round(pool * state.fnPct / 100);
+    if(state.buyin <= 0){ document.getElementById('payout-area').innerHTML = ''; return; }
+    document.getElementById('payout-area').innerHTML = `
       <div class="payout-row">
         <div class="payout-card ht">
           <div class="payout-card-label">&#x23F1; Halftime</div>
@@ -432,27 +434,26 @@
   }
 
   function renderBanner(){
-    document.getElementById('banner-area').innerHTML=state.locked
-      ?`<div class="banner">&#x1F512; All ${state.gs*state.gs} squares claimed &mdash; numbers are locked in! Find the winner by matching the home score's last digit (column) to the away score's last digit (row).</div>`
-      :'';
+    document.getElementById('banner-area').innerHTML = state.locked
+      ? `<div class="banner">&#x1F512; All ${state.gs * state.gs} squares claimed &mdash; numbers are locked in! Find the winner by matching the home score's last digit (column) to the away score's last digit (row).</div>`
+      : '';
   }
 
   function renderPrint(){
-    document.getElementById('print-wrap').innerHTML=state.locked
-      ?'<button class="print-btn" onclick="window.print()">&#128438; Print grid</button>'
-      :'';
+    document.getElementById('print-wrap').innerHTML = state.locked
+      ? '<button class="print-btn" onclick="window.print()">&#128438; Print grid</button>'
+      : '';
   }
 
   function renderRules(){
-    const pre=state.locked
-      ?`<p><strong>How to find the winner:</strong> Take the last digit of the home team's score &mdash; find that column. Take the last digit of the away team's score &mdash; find that row. The square where they meet wins. Example: a 2&ndash;1 score means column 2, row 1.</p>`
-      :`<p><strong>How it works:</strong> Click any empty square and type your name to claim it. Once all ${state.gs*state.gs} squares are filled, the numbers along both axes are randomly assigned and permanently locked &mdash; no one knows their digits until the very last square is claimed.</p>`;
-    document.getElementById('rules-box').innerHTML=pre+
+    const pre = state.locked
+      ? `<p><strong>How to find the winner:</strong> Take the last digit of the home team's score &mdash; find that column. Take the last digit of the away team's score &mdash; find that row. The square where they meet wins. Example: a 2&ndash;1 score means column 2, row 1.</p>`
+      : `<p><strong>How it works:</strong> Click any empty square and type your name to claim it. Once all ${state.gs * state.gs} squares are filled, the numbers along both axes are randomly assigned and permanently locked &mdash; no one knows their digits until the very last square is claimed.</p>`;
+    document.getElementById('rules-box').innerHTML = pre +
       `<p><strong>Tied at full-time:</strong> If the game is tied at the end of regular time, there will be an additional payout for the score at the end of regular time. The regular time and full-time scores will split the full-time payout equally.</p>
        <p><strong>High-scoring rule:</strong> If a team scores more than four goals, then 4 is the winning number along either axis.</p>
        <p><strong>Penalty kicks rule:</strong> If the game goes to penalty kicks, then the winning number will be plus one for the winning team at the end of regulation, regardless of the number of rounds of penalty kicks.</p>`;
   }
-
 </script>
 </body>
 </html>
