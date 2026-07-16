@@ -412,7 +412,18 @@
       state.ad=shuffle([...d]);
       state.locked=true;
     }
-    saveState();
+    // Save only grid-related fields — never overwrite admin settings from a player action
+    set(gameRef, {
+      gs: state.gs,
+      cells: state.cells,
+      nameMap: state.nameMap,
+      hd: state.hd || null,
+      ad: state.ad || null,
+      locked: state.locked,
+      buyin: state.buyin,
+      htPct: state.htPct,
+      fnPct: state.fnPct
+    });
   }
 
   function renderStat(){
