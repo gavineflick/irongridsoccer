@@ -430,15 +430,16 @@
     const taken=state.cells.filter(c=>c&&c.trim()).length;
     const total=state.gs*state.gs;
     const ppl=Object.keys(state.nameMap).length;
-    const pool=ppl*state.buyin;
+    const pool=total*state.buyin;
     let s=`<span>Squares filled: <span class="sv">${taken} / ${total}</span></span><span>Players: <span class="sv">${ppl}</span></span>`;
-    if(state.buyin>0) s+=`<span>Buy-in: <span class="sv">$${state.buyin}</span></span><span>Est. pool: <span class="sv">$${pool.toLocaleString()}</span></span>`;
+    if(state.buyin>0) s+=`<span>Buy-in: <span class="sv">$${state.buyin}</span></span><span>Total pool: <span class="sv">$${pool.toLocaleString()}</span></span>`;
     document.getElementById('stat-bar').innerHTML=s;
   }
 
   function renderPayouts(){
     const ppl=Object.keys(state.nameMap).length;
-    const pool=ppl*state.buyin;
+    const totalSquares=state.gs*state.gs;
+    const pool=totalSquares*state.buyin;
     const htAmt=Math.round(pool*state.htPct/100);
     const fnAmt=Math.round(pool*state.fnPct/100);
     if(state.buyin<=0){document.getElementById('payout-area').innerHTML='';return;}
@@ -447,12 +448,12 @@
         <div class="payout-card ht">
           <div class="payout-card-label">&#x23F1; Halftime</div>
           <div class="payout-card-amount">$${htAmt.toLocaleString()}</div>
-          <div class="payout-card-sub">${state.htPct}% of pool</div>
+          <div class="payout-card-sub">${state.htPct}% of total pool</div>
         </div>
         <div class="payout-card fn">
           <div class="payout-card-label">&#x1F3C6; Full-time</div>
           <div class="payout-card-amount">$${fnAmt.toLocaleString()}</div>
-          <div class="payout-card-sub">${state.fnPct}% of pool &mdash; split equally if tied at end of regular time</div>
+          <div class="payout-card-sub">${state.fnPct}% of total pool &mdash; split equally if tied at end of regular time</div>
         </div>
       </div>`;
   }
