@@ -117,8 +117,8 @@
 
 <div class="modal-overlay" id="admin-modal">
   <div class="modal">
-    <h3 id="modal-title">Admin access required</h3>
-    <p id="modal-desc">Enter the admin password to continue.</p>
+    <h3>Admin access required</h3>
+    <p>Enter the admin password to continue.</p>
     <input type="password" id="modal-pw" placeholder="Admin password">
     <div class="modal-err" id="modal-err">Incorrect password. Please try again.</div>
     <div class="modal-btns">
@@ -196,69 +196,39 @@
   const BG=["#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#F1EFE8","#E8EFF8","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE"];
   const FG=["#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#444441","#1a3a5c","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041"];
 
-  // Single source of truth — always read from Firebase
   let state = null;
   let pendingAction = null;
+  let listening = false;
 
   function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
   function digs(n){return n===5?[0,1,2,3,4]:[0,1,2,3,4,5,6,7,8,9];}
-  function colorIdx(name){if(state.nameMap[name]===undefined)state.nameMap[name]=Object.keys(state.nameMap).length;return state.nameMap[name];}
+
+  function colorIdx(name){
+    if(state.nameMap[name]===undefined) state.nameMap[name]=Object.keys(state.nameMap).length;
+    return state.nameMap[name];
+  }
+
   function isFull(){return state.cells.every(c=>c&&c.trim());}
   function nameTaken(name){return Object.keys(state.nameMap).some(n=>n.toLowerCase()===name.toLowerCase());}
 
-  function saveState(){
-    return set(gameRef, {
-      gs: state.gs,
-      cells: state.cells,
-      nameMap: state.nameMap,
-      hd: state.hd || null,
-      ad: state.ad || null,
-      locked: state.locked,
-      buyin: state.buyin,
-      htPct: state.htPct,
-      fnPct: state.fnPct
-    });
+  async function saveState(){
+    try {
+      await set(gameRef, {
+        gs: state.gs,
+        cells: state.cells,
+        nameMap: state.nameMap,
+        hd: state.hd || null,
+        ad: state.ad || null,
+        locked: state.locked,
+        buyin: state.buyin,
+        htPct: state.htPct,
+        fnPct: state.fnPct
+      });
+    } catch(e) {
+      alert('Error saving to database: ' + e.message);
+    }
   }
 
-  function getInputs(){
-    return {
-      gs: parseInt(document.getElementById('gsz').value) || 5,
-      buyin: parseFloat(document.getElementById('bi').value) || 0,
-      htPct: parseFloat(document.getElementById('ht-pct').value) || 25,
-      fnPct: parseFloat(document.getElementById('fn-pct').value) || 75
-    };
-  }
-
-  function doNew(){
-    const inp = getInputs();
-    state = {
-      gs: inp.gs,
-      cells: new Array(inp.gs * inp.gs).fill(''),
-      nameMap: {},
-      hd: null,
-      ad: null,
-      locked: false,
-      buyin: inp.buyin,
-      htPct: inp.htPct,
-      fnPct: inp.fnPct
-    };
-    saveState();
-  }
-
-  function doReset(){
-    const inp = getInputs();
-    state.cells = new Array(state.gs * state.gs).fill('');
-    state.nameMap = {};
-    state.hd = null;
-    state.ad = null;
-    state.locked = false;
-    state.buyin = inp.buyin;
-    state.htPct = inp.htPct;
-    state.fnPct = inp.fnPct;
-    saveState();
-  }
-
-  // Admin modal
   window.requireAdmin = function(action){
     pendingAction = action;
     document.getElementById('modal-pw').value = '';
@@ -285,36 +255,81 @@
     }
   };
 
-  document.getElementById('modal-pw').addEventListener('keydown', e => {
-    if(e.key === 'Enter') window.checkPassword();
-    if(e.key === 'Escape') window.closeModal();
+  document.getElementById('modal-pw').addEventListener('keydown', e=>{
+    if(e.key==='Enter') window.checkPassword();
+    if(e.key==='Escape') window.closeModal();
   });
 
-  // Listen to Firebase — this is the only place state is set from saved data
+  function readInputs(){
+    return {
+      gs:   parseInt(document.getElementById('gsz').value)    || 5,
+      buyin: parseFloat(document.getElementById('bi').value)  || 0,
+      htPct: parseFloat(document.getElementById('ht-pct').value) || 25,
+      fnPct: parseFloat(document.getElementById('fn-pct').value) || 75
+    };
+  }
+
+  function doNew(){
+    const inp = readInputs();
+    state = {
+      gs: inp.gs,
+      cells: new Array(inp.gs * inp.gs).fill(''),
+      nameMap: {},
+      hd: null,
+      ad: null,
+      locked: false,
+      buyin: inp.buyin,
+      htPct: inp.htPct,
+      fnPct: inp.fnPct
+    };
+    saveState();
+  }
+
+  function doReset(){
+    const inp = readInputs();
+    state = {
+      gs: state ? state.gs : inp.gs,
+      cells: new Array((state ? state.gs : inp.gs) * (state ? state.gs : inp.gs)).fill(''),
+      nameMap: {},
+      hd: null,
+      ad: null,
+      locked: false,
+      buyin: inp.buyin,
+      htPct: inp.htPct,
+      fnPct: inp.fnPct
+    };
+    saveState();
+  }
+
+  // Start listening to Firebase
   onValue(gameRef, (snapshot) => {
     document.getElementById('loading-area').style.display = 'none';
     document.getElementById('game-area').style.display = 'block';
+
     const data = snapshot.val();
     if(data && data.gs){
       state = {
-        gs: data.gs,
-        cells: data.cells || new Array(data.gs * data.gs).fill(''),
-        nameMap: data.nameMap || {},
-        hd: data.hd || null,
-        ad: data.ad || null,
+        gs:     data.gs,
+        cells:  data.cells  || new Array(data.gs * data.gs).fill(''),
+        nameMap:data.nameMap || {},
+        hd:     data.hd     || null,
+        ad:     data.ad     || null,
         locked: data.locked || false,
-        buyin: typeof data.buyin === 'number' ? data.buyin : 0,
-        htPct: typeof data.htPct === 'number' ? data.htPct : 25,
-        fnPct: typeof data.fnPct === 'number' ? data.fnPct : 75
+        buyin:  (data.buyin  !== undefined && data.buyin  !== null) ? Number(data.buyin)  : 0,
+        htPct:  (data.htPct  !== undefined && data.htPct  !== null) ? Number(data.htPct)  : 25,
+        fnPct:  (data.fnPct  !== undefined && data.fnPct  !== null) ? Number(data.fnPct)  : 75
       };
-      // Sync admin bar inputs to match saved state
-      document.getElementById('gsz').value = state.gs;
-      document.getElementById('bi').value = state.buyin;
-      document.getElementById('ht-pct').value = state.htPct;
-      document.getElementById('fn-pct').value = state.fnPct;
+      // Only sync inputs on first load, not on every update
+      if(!listening){
+        document.getElementById('gsz').value    = state.gs;
+        document.getElementById('bi').value     = state.buyin;
+        document.getElementById('ht-pct').value = state.htPct;
+        document.getElementById('fn-pct').value = state.fnPct;
+        listening = true;
+      }
     } else {
-      // Nothing in Firebase yet — blank slate
       state = { gs:5, cells:new Array(25).fill(''), nameMap:{}, hd:null, ad:null, locked:false, buyin:0, htPct:25, fnPct:75 };
+      listening = true;
     }
     renderAll();
   });
@@ -331,29 +346,27 @@
   function renderGrid(){
     const d = digs(state.gs);
     let h = '<thead><tr><th class="corner ax"></th>';
-    d.forEach((_,i) => { h += `<th class="ax${state.locked ? '' : ' tbd'}">${state.locked ? state.hd[i] : '?'}</th>`; });
+    d.forEach((_,i)=>{ h += `<th class="ax${state.locked?'':' tbd'}">${state.locked?state.hd[i]:'?'}</th>`; });
     h += '</tr></thead><tbody>';
-    for(let r = 0; r < state.gs; r++){
-      h += `<tr><th class="ax${state.locked ? '' : ' tbd'}">${state.locked ? state.ad[r] : '?'}</th>`;
-      for(let c = 0; c < state.gs; c++){
-        const idx = r * state.gs + c;
-        const name = (state.cells[idx] || '');
+    for(let r=0;r<state.gs;r++){
+      h += `<tr><th class="ax${state.locked?'':' tbd'}">${state.locked?state.ad[r]:'?'}</th>`;
+      for(let c=0;c<state.gs;c++){
+        const idx = r*state.gs+c;
+        const name = state.cells[idx]||'';
         if(name.trim()){
           const i = colorIdx(name.trim());
           h += `<td class="sq-cell taken" style="background:${BG[i%BG.length]};color:${FG[i%FG.length]}">
             <div class="cell-inner">
               <div class="cell-name">${name}</div>
-              ${state.locked ? `<div class="cell-coord">${state.hd[c]}-${state.ad[r]}</div>` : ''}
-            </div>
-          </td>`;
+              ${state.locked?`<div class="cell-coord">${state.hd[c]}-${state.ad[r]}</div>`:''}
+            </div></td>`;
         } else {
           h += `<td class="sq-cell empty" id="cell-${idx}" onclick="claimCell(${idx})">
             <div class="cell-inner"><div class="cell-hint">click to claim</div></div>
             <div class="overlay" id="ov-${idx}">
               <input class="cell-input" id="inp-${idx}" placeholder="Your name" maxlength="20">
               <span class="cell-error" id="err-${idx}">Name taken &mdash; try a different name</span>
-            </div>
-          </td>`;
+            </div></td>`;
         }
       }
       h += '</tr>';
@@ -363,62 +376,62 @@
   }
 
   window.claimCell = function(idx){
-    if((state.cells[idx] && state.cells[idx].trim()) || state.locked) return;
-    const ov = document.getElementById('ov-' + idx);
+    if((state.cells[idx]&&state.cells[idx].trim())||state.locked) return;
+    const ov = document.getElementById('ov-'+idx);
     if(!ov) return;
     ov.classList.add('show');
-    const inp = document.getElementById('inp-' + idx);
+    const inp = document.getElementById('inp-'+idx);
     inp.focus();
-    inp.onkeydown = e => {
-      if(e.key === 'Enter') confirmClaim(idx, inp.value);
-      if(e.key === 'Escape') ov.classList.remove('show');
+    inp.onkeydown = e=>{
+      if(e.key==='Enter') confirmClaim(idx,inp.value);
+      if(e.key==='Escape') ov.classList.remove('show');
     };
-    inp.oninput = () => {
+    inp.oninput = ()=>{
       inp.classList.remove('error');
-      const errEl = document.getElementById('err-' + idx);
-      if(errEl) errEl.classList.remove('show');
+      const el=document.getElementById('err-'+idx);
+      if(el) el.classList.remove('show');
     };
-    inp.onblur = () => setTimeout(() => { if(ov && !inp.classList.contains('error')) ov.classList.remove('show'); }, 200);
+    inp.onblur = ()=>setTimeout(()=>{ if(ov&&!inp.classList.contains('error')) ov.classList.remove('show'); },200);
   };
 
-  function confirmClaim(idx, val){
+  function confirmClaim(idx,val){
     const name = val.trim();
     if(!name) return;
     if(nameTaken(name)){
-      const inp = document.getElementById('inp-' + idx);
-      const errEl = document.getElementById('err-' + idx);
-      if(inp){ inp.classList.add('error'); inp.select(); }
-      if(errEl) errEl.classList.add('show');
+      const inp=document.getElementById('inp-'+idx);
+      const el=document.getElementById('err-'+idx);
+      if(inp){inp.classList.add('error');inp.select();}
+      if(el) el.classList.add('show');
       return;
     }
     state.cells[idx] = name;
     colorIdx(name);
-    if(isFull() && !state.locked){
-      const d = digs(state.gs);
-      state.hd = shuffle([...d]);
-      state.ad = shuffle([...d]);
-      state.locked = true;
+    if(isFull()&&!state.locked){
+      const d=digs(state.gs);
+      state.hd=shuffle([...d]);
+      state.ad=shuffle([...d]);
+      state.locked=true;
     }
     saveState();
   }
 
   function renderStat(){
-    const taken = state.cells.filter(c => c && c.trim()).length;
-    const total = state.gs * state.gs;
-    const ppl = Object.keys(state.nameMap).length;
-    const pool = ppl * state.buyin;
-    let s = `<span>Squares filled: <span class="sv">${taken} / ${total}</span></span><span>Players: <span class="sv">${ppl}</span></span>`;
-    if(state.buyin > 0) s += `<span>Buy-in: <span class="sv">$${state.buyin}</span></span><span>Est. pool: <span class="sv">$${pool.toLocaleString()}</span></span>`;
-    document.getElementById('stat-bar').innerHTML = s;
+    const taken=state.cells.filter(c=>c&&c.trim()).length;
+    const total=state.gs*state.gs;
+    const ppl=Object.keys(state.nameMap).length;
+    const pool=ppl*state.buyin;
+    let s=`<span>Squares filled: <span class="sv">${taken} / ${total}</span></span><span>Players: <span class="sv">${ppl}</span></span>`;
+    if(state.buyin>0) s+=`<span>Buy-in: <span class="sv">$${state.buyin}</span></span><span>Est. pool: <span class="sv">$${pool.toLocaleString()}</span></span>`;
+    document.getElementById('stat-bar').innerHTML=s;
   }
 
   function renderPayouts(){
-    const ppl = Object.keys(state.nameMap).length;
-    const pool = ppl * state.buyin;
-    const htAmt = Math.round(pool * state.htPct / 100);
-    const fnAmt = Math.round(pool * state.fnPct / 100);
-    if(state.buyin <= 0){ document.getElementById('payout-area').innerHTML = ''; return; }
-    document.getElementById('payout-area').innerHTML = `
+    const ppl=Object.keys(state.nameMap).length;
+    const pool=ppl*state.buyin;
+    const htAmt=Math.round(pool*state.htPct/100);
+    const fnAmt=Math.round(pool*state.fnPct/100);
+    if(state.buyin<=0){document.getElementById('payout-area').innerHTML='';return;}
+    document.getElementById('payout-area').innerHTML=`
       <div class="payout-row">
         <div class="payout-card ht">
           <div class="payout-card-label">&#x23F1; Halftime</div>
@@ -434,22 +447,22 @@
   }
 
   function renderBanner(){
-    document.getElementById('banner-area').innerHTML = state.locked
-      ? `<div class="banner">&#x1F512; All ${state.gs * state.gs} squares claimed &mdash; numbers are locked in! Find the winner by matching the home score's last digit (column) to the away score's last digit (row).</div>`
-      : '';
+    document.getElementById('banner-area').innerHTML=state.locked
+      ?`<div class="banner">&#x1F512; All ${state.gs*state.gs} squares claimed &mdash; numbers are locked in! Find the winner by matching the home score's last digit (column) to the away score's last digit (row).</div>`
+      :'';
   }
 
   function renderPrint(){
-    document.getElementById('print-wrap').innerHTML = state.locked
-      ? '<button class="print-btn" onclick="window.print()">&#128438; Print grid</button>'
-      : '';
+    document.getElementById('print-wrap').innerHTML=state.locked
+      ?'<button class="print-btn" onclick="window.print()">&#128438; Print grid</button>'
+      :'';
   }
 
   function renderRules(){
-    const pre = state.locked
-      ? `<p><strong>How to find the winner:</strong> Take the last digit of the home team's score &mdash; find that column. Take the last digit of the away team's score &mdash; find that row. The square where they meet wins. Example: a 2&ndash;1 score means column 2, row 1.</p>`
-      : `<p><strong>How it works:</strong> Click any empty square and type your name to claim it. Once all ${state.gs * state.gs} squares are filled, the numbers along both axes are randomly assigned and permanently locked &mdash; no one knows their digits until the very last square is claimed.</p>`;
-    document.getElementById('rules-box').innerHTML = pre +
+    const pre=state.locked
+      ?`<p><strong>How to find the winner:</strong> Take the last digit of the home team's score &mdash; find that column. Take the last digit of the away team's score &mdash; find that row. The square where they meet wins. Example: a 2&ndash;1 score means column 2, row 1.</p>`
+      :`<p><strong>How it works:</strong> Click any empty square and type your name to claim it. Once all ${state.gs*state.gs} squares are filled, the numbers along both axes are randomly assigned and permanently locked &mdash; no one knows their digits until the very last square is claimed.</p>`;
+    document.getElementById('rules-box').innerHTML=pre+
       `<p><strong>Tied at full-time:</strong> If the game is tied at the end of regular time, there will be an additional payout for the score at the end of regular time. The regular time and full-time scores will split the full-time payout equally.</p>
        <p><strong>High-scoring rule:</strong> If a team scores more than four goals, then 4 is the winning number along either axis.</p>
        <p><strong>Penalty kicks rule:</strong> If the game goes to penalty kicks, then the winning number will be plus one for the winning team at the end of regulation, regardless of the number of rounds of penalty kicks.</p>`;
