@@ -27,7 +27,7 @@
 
   .main { max-width: 960px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
 
-  .admin-bar { display:flex; gap:12px; align-items:flex-end; margin-bottom:1.25rem; flex-wrap:wrap; background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius); padding:1rem 1.25rem; }
+  .admin-bar { display:flex; gap:12px; align-items:flex-end; margin-bottom:0.5rem; flex-wrap:wrap; background:var(--surface); border:1px solid var(--border-light); border-radius:var(--radius); padding:1rem 1.25rem; }
   .fg { display:flex; flex-direction:column; gap:4px; }
   .fg label { font-size:12px; color:var(--text-muted); }
   .fg select, .fg input[type=number], .fg input[type=password] { height:34px; border:1px solid var(--border); border-radius:var(--radius); font-family:'DM Sans',sans-serif; font-size:13px; color:var(--text); background:var(--surface); padding:0 10px; outline:none; }
@@ -41,7 +41,7 @@
   .reset-btn { background:var(--surface); border:1px solid var(--red); border-radius:var(--radius); padding:8px 14px; font-size:12px; font-family:'DM Sans',sans-serif; cursor:pointer; color:var(--red); height:34px; }
   .reset-btn:hover { background:#fdf0ef; }
 
-  .admin-note { font-size:11px; color:var(--text-hint); margin-top:0.5rem; }
+  .admin-note { font-size:11px; color:var(--text-hint); margin-bottom:1.25rem; }
 
   .stat-bar { display:flex; flex-wrap:wrap; gap:16px; font-size:12px; color:var(--text-muted); margin-bottom:1rem; }
   .sv { font-weight:600; color:var(--text); }
@@ -99,7 +99,6 @@
   .rules-box p { margin-bottom:0.6rem; }
   .rules-box p:last-child { margin-bottom:0; }
 
-  /* Admin modal */
   .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:100; align-items:center; justify-content:center; }
   .modal-overlay.show { display:flex; }
   .modal { background:var(--surface); border-radius:var(--radius); padding:1.5rem; width:320px; box-shadow:0 8px 32px rgba(0,0,0,0.2); }
@@ -119,7 +118,7 @@
     .cell-hint { font-size:9px; }
   }
   @media print {
-    .admin-bar, .print-btn, .modal-overlay { display:none !important; }
+    .admin-bar, .admin-note, .print-btn, .modal-overlay { display:none !important; }
     header { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   }
 </style>
@@ -134,7 +133,6 @@
   </div>
 </header>
 
-<!-- Admin password modal -->
 <div class="modal-overlay" id="admin-modal">
   <div class="modal">
     <h3>Admin access required</h3>
@@ -160,15 +158,15 @@
     </div>
     <div class="fg">
       <label for="bi">Buy-in ($)</label>
-      <input type="number" id="bi" value="0" min="0" step="1" oninput="renderPayouts()">
+      <input type="number" id="bi" value="0" min="0" step="1">
     </div>
     <div class="fg">
       <label for="ht-pct">Halftime %</label>
-      <input type="number" id="ht-pct" value="25" min="0" max="100" step="1" oninput="renderPayouts()">
+      <input type="number" id="ht-pct" value="25" min="0" max="100" step="1">
     </div>
     <div class="fg">
       <label for="fn-pct">Full-time %</label>
-      <input type="number" id="fn-pct" value="75" min="0" max="100" step="1" oninput="renderPayouts()">
+      <input type="number" id="fn-pct" value="75" min="0" max="100" step="1">
     </div>
     <button class="start-btn" onclick="requireAdmin('new')">New pool</button>
     <button class="reset-btn" onclick="requireAdmin('reset')">Reset</button>
@@ -196,10 +194,9 @@
 
 </div>
 
-<!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyClfe5X7FOaBJtjKgDmLnS7ZFZCA7cOhgs",
@@ -215,12 +212,12 @@
   const db = getDatabase(app);
   const gameRef = ref(db, 'pool');
 
-  const ADMIN_PASSWORD = "irongridsoccer";
+  const ADMIN_PASSWORD = "gavinflick";
 
   const BG=["#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#F1EFE8","#E8EFF8","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#EEEDFE","#E1F5EE"];
   const FG=["#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#444441","#1a3a5c","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#3C3489","#085041"];
 
-  let state = { gs:5, cells:[], nameMap:{}, hd:null, ad:null, locked:false };
+  let state = { gs:5, cells:[], nameMap:{}, hd:null, ad:null, locked:false, buyin:0, htPct:25, fnPct:75 };
   let pendingAction = null;
 
   function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
@@ -236,17 +233,26 @@
       nameMap: state.nameMap,
       hd: state.hd,
       ad: state.ad,
-      locked: state.locked
+      locked: state.locked,
+      buyin: state.buyin,
+      htPct: state.htPct,
+      fnPct: state.fnPct
     });
   }
 
   function initNew(){
     const gs = parseInt(document.getElementById('gsz').value);
-    state = { gs, cells:new Array(gs*gs).fill(''), nameMap:{}, hd:null, ad:null, locked:false };
+    const buyin = parseFloat(document.getElementById('bi').value)||0;
+    const htPct = parseFloat(document.getElementById('ht-pct').value)||25;
+    const fnPct = parseFloat(document.getElementById('fn-pct').value)||75;
+    state = { gs, cells:new Array(gs*gs).fill(''), nameMap:{}, hd:null, ad:null, locked:false, buyin, htPct, fnPct };
     saveState();
   }
 
   function resetGrid(){
+    state.buyin = parseFloat(document.getElementById('bi').value)||0;
+    state.htPct = parseFloat(document.getElementById('ht-pct').value)||25;
+    state.fnPct = parseFloat(document.getElementById('fn-pct').value)||75;
     state.cells = new Array(state.gs*state.gs).fill('');
     state.nameMap = {};
     state.hd = null;
@@ -255,7 +261,6 @@
     saveState();
   }
 
-  // Admin modal
   window.requireAdmin = function(action){
     pendingAction = action;
     document.getElementById('modal-pw').value='';
@@ -287,7 +292,6 @@
     if(e.key==='Escape') window.closeModal();
   });
 
-  // Listen for real-time changes
   onValue(gameRef, (snapshot)=>{
     document.getElementById('loading-area').style.display='none';
     document.getElementById('game-area').style.display='block';
@@ -299,10 +303,18 @@
         nameMap: data.nameMap||{},
         hd: data.hd||null,
         ad: data.ad||null,
-        locked: data.locked||false
+        locked: data.locked||false,
+        buyin: data.buyin||0,
+        htPct: data.htPct||25,
+        fnPct: data.fnPct||75
       };
+      // Sync inputs to saved values
+      document.getElementById('bi').value = state.buyin;
+      document.getElementById('ht-pct').value = state.htPct;
+      document.getElementById('fn-pct').value = state.fnPct;
+      document.getElementById('gsz').value = state.gs;
     } else {
-      state = { gs:5, cells:new Array(25).fill(''), nameMap:{}, hd:null, ad:null, locked:false };
+      state = { gs:5, cells:new Array(25).fill(''), nameMap:{}, hd:null, ad:null, locked:false, buyin:0, htPct:25, fnPct:75 };
     }
     renderAll();
   });
@@ -391,36 +403,33 @@
 
   function renderStat(){
     const taken=state.cells.filter(c=>c&&c.trim()).length, total=state.gs*state.gs;
-    const buyin=parseFloat(document.getElementById('bi').value)||0;
     const ppl=Object.keys(state.nameMap).length;
+    const pool=ppl*state.buyin;
     let s=`<span>Squares filled: <span class="sv">${taken} / ${total}</span></span><span>Players: <span class="sv">${ppl}</span></span>`;
-    if(buyin>0) s+=`<span>Buy-in: <span class="sv">$${buyin}</span></span><span>Est. pool: <span class="sv">$${(ppl*buyin).toLocaleString()}</span></span>`;
+    if(state.buyin>0) s+=`<span>Buy-in: <span class="sv">$${state.buyin}</span></span><span>Est. pool: <span class="sv">$${pool.toLocaleString()}</span></span>`;
     document.getElementById('stat-bar').innerHTML=s;
   }
 
-  window.renderPayouts = function(){
-    const buyin=parseFloat(document.getElementById('bi').value)||0;
+  function renderPayouts(){
     const ppl=Object.keys(state.nameMap).length;
-    const pool=ppl*buyin;
-    const htPct=parseFloat(document.getElementById('ht-pct').value)||0;
-    const fnPct=parseFloat(document.getElementById('fn-pct').value)||0;
-    const htAmt=Math.round(pool*htPct/100);
-    const fnAmt=Math.round(pool*fnPct/100);
-    if(buyin<=0){document.getElementById('payout-area').innerHTML='';return;}
+    const pool=ppl*state.buyin;
+    const htAmt=Math.round(pool*state.htPct/100);
+    const fnAmt=Math.round(pool*state.fnPct/100);
+    if(state.buyin<=0){document.getElementById('payout-area').innerHTML='';return;}
     document.getElementById('payout-area').innerHTML=`
       <div class="payout-row">
         <div class="payout-card ht">
           <div class="payout-card-label">&#x23F1; Halftime</div>
           <div class="payout-card-amount">$${htAmt.toLocaleString()}</div>
-          <div class="payout-card-sub">${htPct}% of pool</div>
+          <div class="payout-card-sub">${state.htPct}% of pool</div>
         </div>
         <div class="payout-card fn">
           <div class="payout-card-label">&#x1F3C6; Full-time</div>
           <div class="payout-card-amount">$${fnAmt.toLocaleString()}</div>
-          <div class="payout-card-sub">${fnPct}% of pool &mdash; split equally if tied at end of regular time</div>
+          <div class="payout-card-sub">${state.fnPct}% of pool &mdash; split equally if tied at end of regular time</div>
         </div>
       </div>`;
-  };
+  }
 
   function renderBanner(){
     document.getElementById('banner-area').innerHTML=state.locked
