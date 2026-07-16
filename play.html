@@ -286,17 +286,17 @@
   }
 
   function doReset(){
-    const inp = readInputs();
+    // Keep all admin settings from current state — only clear the grid
     state = {
-      gs: state ? state.gs : inp.gs,
-      cells: new Array((state ? state.gs : inp.gs) * (state ? state.gs : inp.gs)).fill(''),
+      gs: state.gs,
+      cells: new Array(state.gs * state.gs).fill(''),
       nameMap: {},
       hd: null,
       ad: null,
       locked: false,
-      buyin: inp.buyin,
-      htPct: inp.htPct,
-      fnPct: inp.fnPct
+      buyin: state.buyin,
+      htPct: state.htPct,
+      fnPct: state.fnPct
     };
     saveState();
   }
