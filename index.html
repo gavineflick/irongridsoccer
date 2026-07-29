@@ -11,112 +11,102 @@
   --navy:#0a1628;--gold:#c8a84b;--gold-light:#f0d080;--gold-dark:#8a6e28;
   --red:#c0392b;--red-light:#fdf0ef;--text:#1a1a1a;--text-muted:#666;--text-hint:#999;
   --border:#d4d4d4;--border-light:#e8e8e8;--bg:#f4f4f0;--surface:#fff;--surface2:#f0f0ec;
-  --radius:8px;--green-light:#e8f5ee;--green-mid:#2d9e5f;
+  --radius:8px;
 }
 body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
 header{background:var(--navy);position:relative;overflow:hidden}
 header::before{content:"";position:absolute;inset:0;
   background:repeating-linear-gradient(90deg,rgba(200,168,75,.04) 0,rgba(200,168,75,.04) 1px,transparent 1px,transparent 40px),
              repeating-linear-gradient(0deg,rgba(200,168,75,.04) 0,rgba(200,168,75,.04) 1px,transparent 1px,transparent 40px)}
-.header-inner{max-width:1100px;margin:0 auto;padding:1.5rem;position:relative;z-index:1;display:flex;align-items:center;gap:1.5rem}
+.header-inner{max-width:1000px;margin:0 auto;padding:1.5rem;position:relative;z-index:1;display:flex;align-items:center;gap:1.5rem}
 .logo-wrap img{height:90px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
 .header-text h1{font-family:"Oswald",sans-serif;font-size:clamp(1.4rem,3.5vw,2rem);font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--gold-light);line-height:1.1;margin-bottom:4px}
 .header-text p{font-size:12px;opacity:.55;font-family:"DM Mono",monospace;letter-spacing:.05em}
 .gold-bar{height:3px;background:linear-gradient(90deg,var(--gold-dark),var(--gold-light),var(--gold-dark))}
-.main{max-width:1100px;margin:0 auto;padding:1.5rem 1.25rem 3rem}
 
-/* ── PHASE: SETUP ── */
-.setup-card{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
-.setup-card h2{font-family:"Oswald",sans-serif;font-size:1rem;letter-spacing:.05em;color:var(--navy);margin-bottom:.75rem;text-transform:uppercase}
-.input-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
-.fg{display:flex;flex-direction:column;gap:4px}
-.fg label{font-size:11px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-.fg input[type=text],.fg input[type=number]{height:36px;border:1px solid var(--border);border-radius:var(--radius);font-family:"DM Sans",sans-serif;font-size:13px;color:var(--text);background:var(--surface);padding:0 10px;outline:none}
-.fg input[type=text]{width:180px}
-.fg input[type=number]{width:110px}
-.fg input:focus{border-color:var(--gold)}
-.add-btn{background:var(--gold);color:var(--navy);border:none;border-radius:var(--radius);padding:0 18px;font-size:13px;font-weight:700;font-family:"DM Sans",sans-serif;cursor:pointer;height:36px}
-.add-btn:hover{background:var(--gold-light)}
-.err-msg{font-size:11px;color:var(--red);margin-top:4px;display:none}
-.err-msg.show{display:block}
+.main{max-width:1000px;margin:0 auto;padding:1.5rem 1.25rem 3rem}
 
-.entrants-table{width:100%;border-collapse:collapse;margin-top:.75rem;font-size:13px}
-.entrants-table th{text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);padding:6px 8px;border-bottom:2px solid var(--border-light)}
-.entrants-table td{padding:7px 8px;border-bottom:1px solid var(--border-light);vertical-align:middle}
-.entrants-table tr:last-child td{border-bottom:none}
-.remove-btn{background:none;border:none;cursor:pointer;color:var(--red);font-size:14px;padding:0 4px;line-height:1}
-.remove-btn:hover{opacity:.7}
-.pts-badge{display:inline-block;background:#eef2ff;color:#3a4a9a;border-radius:4px;padding:2px 8px;font-size:12px;font-weight:600;font-family:"DM Mono",monospace}
-.squares-badge{display:inline-block;background:var(--gold-light);color:var(--navy);border-radius:4px;padding:2px 8px;font-size:12px;font-weight:600;font-family:"DM Mono",monospace}
+.step{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem}
+.step-head{font-size:13px;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.step-num{background:var(--surface2);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--text-muted);flex-shrink:0}
+.step-hint{font-size:11px;color:var(--text-hint);font-weight:400}
+.field-label{font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px}
+input[type=text],input[type=number]{padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius);font-family:"DM Sans",sans-serif;font-size:13px;color:var(--text);background:var(--surface);outline:none;height:34px}
+input[type=text]:focus,input[type=number]:focus{border-color:var(--gold)}
 
-.config-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:.75rem}
-.summary-line{font-size:12px;color:var(--text-muted);margin-top:.75rem;line-height:1.8}
-.summary-line strong{color:var(--text)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.total-display{font-size:22px;font-weight:700;color:var(--navy);padding-top:2px;font-family:"DM Mono",monospace}
 
-.gen-btn{background:var(--navy);color:var(--gold-light);border:none;border-radius:var(--radius);padding:10px 24px;font-size:14px;font-weight:700;font-family:"Oswald",sans-serif;cursor:pointer;letter-spacing:.05em;margin-top:.75rem}
-.gen-btn:hover{background:#152238}
-.gen-btn:disabled{opacity:.4;cursor:not-allowed}
-.reset-btn{background:var(--surface);border:1px solid var(--red);border-radius:var(--radius);padding:9px 16px;font-size:12px;font-family:"DM Sans",sans-serif;cursor:pointer;color:var(--red)}
-.reset-btn:hover{background:var(--red-light)}
+.name-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px;margin-bottom:10px}
+.name-row{display:flex;gap:5px;align-items:center}
+.name-num{font-size:11px;color:var(--text-hint);width:18px;text-align:right;flex-shrink:0;font-family:"DM Mono",monospace}
+.name-row input{flex:1;font-size:12px;width:100%}
+.icon-btn{background:none;border:1px dashed var(--border);border-radius:var(--radius);padding:6px 12px;font-size:12px;color:var(--text-muted);cursor:pointer;font-family:"DM Sans",sans-serif;display:inline-flex;align-items:center;gap:5px}
+.icon-btn:hover{background:var(--surface2)}
+.remove-btn{background:none;border:none;color:var(--text-hint);cursor:pointer;font-size:16px;line-height:1;padding:0 4px;flex-shrink:0}
+.remove-btn:hover{color:var(--red)}
 
-/* ── PHASE: GRID ── */
-.points-row{display:flex;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap}
-.points-card{flex:1;min-width:120px;border-radius:var(--radius);padding:.75rem 1rem;border:1px solid var(--border-light)}
-.points-card.q1{background:#eef2ff;border-color:#a0aee8}
-.points-card.hf{background:#fff8e6;border-color:var(--gold)}
-.points-card.q3{background:#eef2ff;border-color:#a0aee8}
-.points-card.fn{background:var(--navy);border-color:var(--gold-dark)}
-.points-card-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
-.points-card.q1 .points-card-label,.points-card.q3 .points-card-label{color:#3a4a9a}
-.points-card.hf .points-card-label{color:var(--gold-dark)}
-.points-card.fn .points-card-label{color:var(--gold)}
-.points-card-value{font-size:26px;font-weight:700;font-family:"Oswald",sans-serif}
-.points-card.q1 .points-card-value,.points-card.q3 .points-card-value{color:#3a4a9a}
-.points-card.hf .points-card-value{color:var(--gold-dark)}
-.points-card.fn .points-card-value{color:var(--gold-light)}
-.points-card-sub{font-size:11px;margin-top:2px;color:var(--text-hint)}
-.points-card.fn .points-card-sub{color:rgba(255,255,255,.4)}
+.payout-entry{display:grid;grid-template-columns:1fr 110px 32px;gap:8px;align-items:end;margin-bottom:8px}
+.payout-status{font-size:12px;margin-top:8px}
+.ok{color:#1a6e3c}.err{color:var(--red)}
 
-.banner{background:var(--green-light);border:1px solid var(--green-mid);border-radius:var(--radius);padding:.75rem 1.25rem;font-size:13px;color:#085041;margin-bottom:1.25rem;font-weight:500}
-.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.5rem}
-.grid-outer{overflow-x:auto;margin-bottom:1rem}
+.generate-btn{width:100%;padding:11px;font-size:14px;font-weight:700;font-family:"Oswald",sans-serif;background:var(--navy);color:var(--gold-light);border:none;border-radius:var(--radius);cursor:pointer;letter-spacing:.04em;margin-top:.5rem}
+.generate-btn:hover{background:#152238}
+.err-msg{font-size:12px;color:var(--red);margin-top:6px}
+
+/* Result */
+.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:.6rem}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem}
+.metric{background:var(--surface2);border-radius:var(--radius);padding:.75rem 1rem}
+.metric-label{font-size:11px;color:var(--text-muted);margin-bottom:3px}
+.metric-value{font-size:20px;font-weight:700;font-family:"DM Mono",monospace}
+
+.payouts-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.25rem}
+.payout-chip{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:.65rem 1rem;flex:1;min-width:120px}
+.payout-chip.q1{background:#eef2ff;border-color:#a0aee8}
+.payout-chip.hf{background:#fff8e6;border-color:var(--gold)}
+.payout-chip.q3{background:#eef2ff;border-color:#a0aee8}
+.payout-chip.fn{background:var(--navy);border-color:var(--gold-dark)}
+.chip-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.payout-chip.q1 .chip-label,.payout-chip.q3 .chip-label{color:#3a4a9a}
+.payout-chip.hf .chip-label{color:var(--gold-dark)}
+.payout-chip.fn .chip-label{color:var(--gold)}
+.chip-amount{font-size:22px;font-weight:700;font-family:"DM Mono",monospace}
+.payout-chip.q1 .chip-amount,.payout-chip.q3 .chip-amount{color:#3a4a9a}
+.payout-chip.hf .chip-amount{color:var(--gold-dark)}
+.payout-chip.fn .chip-amount{color:var(--gold-light)}
+.chip-sub{font-size:10px;margin-top:2px;color:var(--text-hint)}
+.payout-chip.fn .chip-sub{color:rgba(255,255,255,.4)}
+
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem}
+.pill{display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:5px 10px;font-size:12px}
+.pdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.pill-name{font-weight:600}
+.pill-squares{font-size:10px;color:var(--text-hint);font-family:"DM Mono",monospace;margin-left:2px}
+
+.action-btns{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.reroll-btn,.print-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:7px 14px;font-size:12px;cursor:pointer;color:var(--text);font-family:"DM Sans",sans-serif;display:inline-flex;align-items:center;gap:6px}
+.reroll-btn:hover,.print-btn:hover{background:var(--surface2)}
+
+.grid-outer{overflow-x:auto;margin-bottom:1.25rem}
 table.sq{border-collapse:collapse}
-table.sq td,table.sq th{border:1px solid var(--border-light);text-align:center}
-table.sq .corner{border:none;background:transparent;width:24px;height:24px}
-table.sq .ax{background:var(--navy);color:rgba(255,255,255,.9);font-family:"DM Mono",monospace;font-size:12px;font-weight:600;width:24px;height:24px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-table.sq .sq-cell{width:68px;height:50px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.cell-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:3px}
-.cell-name{font-size:9px;font-weight:600;line-height:1.3;text-align:center}
-.cell-coord{font-size:7px;opacity:.45;font-family:"DM Mono",monospace;margin-top:1px}
+table.sq td,table.sq th{border:1px solid var(--border-light);text-align:center;padding:2px}
+table.sq .corner{border:none;background:transparent;width:28px}
+table.sq .ax{background:var(--navy);color:rgba(255,255,255,.85);font-family:"DM Mono",monospace;font-size:13px;font-weight:600;width:28px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+table.sq .sq-cell{height:50px;width:66px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sq-name{font-size:9px;font-weight:600;line-height:1.3}
+.sq-coord{font-size:8px;opacity:.4;margin-top:2px;font-family:"DM Mono",monospace}
 
-.legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
-.legend-item{display:flex;align-items:center;gap:6px;font-size:12px}
-.legend-swatch{width:14px;height:14px;border-radius:3px;flex-shrink:0}
-.legend-pts{font-family:"DM Mono",monospace;color:var(--text-muted);font-size:11px}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-muted)}
+.ldot{width:11px;height:11px;border-radius:3px;flex-shrink:0;border:1px solid rgba(0,0,0,.1)}
 
-.print-btn{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:7px 14px;font-size:12px;cursor:pointer;color:var(--text);font-family:"DM Sans",sans-serif;display:inline-flex;align-items:center;gap:6px;margin-bottom:1rem}
-.print-btn:hover{background:var(--surface2)}
-.rules-box{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:1rem 1.25rem;font-size:12px;color:var(--text-muted);line-height:1.8}
+.rules-box{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:1rem 1.25rem;font-size:12px;color:var(--text-muted);line-height:1.7}
 .rules-box strong{color:var(--text)}
-.rules-box p{margin-bottom:.5rem}
-.rules-box p:last-child{margin-bottom:0}
 
-/* ── MODAL ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center}
-.modal-overlay.show{display:flex}
-.modal{background:var(--surface);border-radius:var(--radius);padding:1.5rem;width:320px;box-shadow:0 8px 32px rgba(0,0,0,.3);border-top:3px solid var(--gold)}
-.modal h3{font-size:15px;margin-bottom:.75rem;font-family:"Oswald",sans-serif;letter-spacing:.05em}
-.modal p{font-size:12px;color:var(--text-muted);margin-bottom:1rem;line-height:1.5}
-.modal input[type=password]{width:100%;height:36px;border:1px solid var(--border);border-radius:var(--radius);padding:0 10px;font-size:13px;font-family:"DM Sans",sans-serif;outline:none;margin-bottom:.75rem}
-.modal input[type=password]:focus{border-color:var(--gold)}
-.modal-err{font-size:12px;color:var(--red);margin-bottom:.5rem;display:none}
-.modal-err.show{display:block}
-.modal-btns{display:flex;gap:8px;justify-content:flex-end}
-.modal-cancel{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:7px 14px;font-size:12px;cursor:pointer;font-family:"DM Sans",sans-serif}
-.modal-confirm{background:var(--navy);color:var(--gold-light);border:none;border-radius:var(--radius);padding:7px 14px;font-size:12px;cursor:pointer;font-family:"DM Sans",sans-serif;font-weight:600}
-
-@media print{.setup-phase,.reset-btn,.print-btn,.modal-overlay{display:none!important}header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
-@media(max-width:600px){table.sq .sq-cell{width:32px;height:32px}.cell-name{font-size:6px}table.sq .ax{width:18px;height:18px;font-size:9px}}
+@media(max-width:520px){.metrics{grid-template-columns:repeat(2,1fr)}.row2{grid-template-columns:1fr}.payout-entry{grid-template-columns:1fr 90px 28px}}
+@media print{.step,.generate-btn,.action-btns,.icon-btn{display:none!important}header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 </head>
 <body>
@@ -128,288 +118,226 @@ table.sq .sq-cell{width:68px;height:50px;-webkit-print-color-adjust:exact;print-
     </div>
     <div class="header-text">
       <h1>Football Box Pool</h1>
-      <p>Add entrants &mdash; generate grid &mdash; numbers lock instantly</p>
+      <p>100 squares &mdash; configure, generate &amp; share</p>
     </div>
   </div>
 </header>
 <div class="gold-bar"></div>
 
-<!-- Admin password modal -->
-<div class="modal-overlay" id="admin-modal">
-  <div class="modal">
-    <h3>Admin Access Required</h3>
-    <p>Enter the admin password to generate or reset the pool.</p>
-    <input type="password" id="modal-pw" placeholder="Admin password">
-    <div class="modal-err" id="modal-err">Incorrect password. Try again.</div>
-    <div class="modal-btns">
-      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
-      <button class="modal-confirm" onclick="checkPassword()">Confirm</button>
-    </div>
-  </div>
-</div>
-
 <div class="main">
 
-  <!-- ══ SETUP PHASE ══ -->
-  <div class="setup-phase" id="setup-phase">
-
-    <!-- Entrant entry -->
-    <div class="setup-card">
-      <h2>Add Entrants</h2>
-      <div class="input-row">
-        <div class="fg"><label>Name</label><input type="text" id="ent-name" placeholder="Entrant name" maxlength="24"></div>
-        <div class="fg"><label>Entry Points</label><input type="number" id="ent-pts" placeholder="e.g. 100" min="1" step="1"></div>
-        <button class="add-btn" onclick="addEntrant()">Add</button>
+  <!-- Step 1: Entry Points -->
+  <div class="step">
+    <div class="step-head"><span class="step-num">1</span> Entry Points</div>
+    <div class="row2">
+      <div>
+        <label class="field-label" for="entry-pts">Entry points per participant</label>
+        <input type="number" id="entry-pts" value="" min="1" step="1" style="width:100%" oninput="updatePool()">
       </div>
-      <div class="err-msg" id="ent-err"></div>
-
-      <table class="entrants-table" id="ent-table" style="display:none">
-        <thead><tr><th>#</th><th>Name</th><th>Entry Pts</th><th>Squares</th><th></th></tr></thead>
-        <tbody id="ent-tbody"></tbody>
-        <tfoot><tr>
-          <td colspan="2" style="font-size:12px;color:var(--text-muted);padding:7px 8px;font-weight:600">Total</td>
-          <td><span class="pts-badge" id="total-pts-badge">0</span></td>
-          <td><span class="squares-badge" id="total-sq-badge">0 / 100</span></td>
-          <td></td>
-        </tr></tfoot>
-      </table>
-    </div>
-
-    <!-- Pool config -->
-    <div class="setup-card">
-      <h2>Pool Settings &mdash; Payout %</h2>
-      <div class="config-row">
-        <div class="fg"><label>1Q %</label><input type="number" id="q1-pts" value="12.5" min="0" max="100" step="0.5"></div>
-        <div class="fg"><label>Halftime %</label><input type="number" id="hf-pts" value="25" min="0" max="100" step="0.5"></div>
-        <div class="fg"><label>3Q %</label><input type="number" id="q3-pts" value="12.5" min="0" max="100" step="0.5"></div>
-        <div class="fg"><label>Final %</label><input type="number" id="fn-pts" value="50" min="0" max="100" step="0.5"></div>
+      <div>
+        <span class="field-label">Total pool</span>
+        <div class="total-display" id="total-pool">100 pts</div>
       </div>
-      <div class="err-msg" id="pct-err">Percentages must add up to 100%.</div>
-      <div class="summary-line" id="summary-line">Add at least 2 entrants to generate the grid.</div>
-      <br>
-      <button class="gen-btn" id="gen-btn" onclick="requireAdmin('generate')" disabled>Generate Grid</button>
     </div>
   </div>
 
-  <!-- ══ GRID PHASE ══ -->
-  <div id="grid-phase" style="display:none">
-    <div style="display:flex;gap:10px;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap">
-      <div class="banner" style="margin-bottom:0;flex:1">&#x1F512; Grid locked &mdash; numbers randomly assigned. Find the winner by matching the last digit of each score to the grid axes.</div>
-      <button class="reset-btn" onclick="requireAdmin('reset')">Reset Pool</button>
+  <!-- Step 2: Participants -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-num">2</span> Participants
+      <span class="step-hint">(add as many as you like)</span>
     </div>
-
-    <div class="points-row" id="points-area"></div>
-
-    <div class="legend" id="legend"></div>
-
-    <div class="section-label">Home team &rarr; columns (last digit) &nbsp;|&nbsp; Away team &rarr; rows (last digit)</div>
-    <div class="grid-outer"><table class="sq" id="sq-table"></table></div>
-
-    <button class="print-btn" onclick="window.print()">&#128438; Print grid</button>
-
-    <div class="rules-box">
-      <p><strong>How to find the winner:</strong> Take the last digit of the home team&#x2019;s score &mdash; find that column. Take the last digit of the away team&#x2019;s score &mdash; find that row. The square where they meet wins that checkpoint&#x2019;s points.</p>
-      <p><strong>Square distribution:</strong> Each entrant receives squares proportional to their entry points. If the total doesn&#x2019;t divide evenly into 100 squares, remaining squares are assigned randomly.</p>
-      <p><strong>Scoring checkpoints:</strong> 1st Quarter, Halftime, 3rd Quarter, and Final Score. Points are awarded to the owner of the winning square at each checkpoint.</p>
-    </div>
+    <div class="name-grid" id="name-grid"></div>
+    <button class="icon-btn" onclick="addName()">&#43; Add participant</button>
+    <div class="err-msg" id="name-err"></div>
   </div>
+
+  <!-- Step 3: Payout split -->
+  <div class="step">
+    <div class="step-head">
+      <span class="step-num">3</span> Payout Split
+      <span class="step-hint">(must total 100%)</span>
+    </div>
+    <div id="payout-rows"></div>
+    <button class="icon-btn" onclick="addPayout()" style="margin-top:6px">&#43; Add checkpoint</button>
+    <div class="payout-status" id="payout-status"></div>
+  </div>
+
+  <button class="generate-btn" onclick="generate()">Generate Grid</button>
+  <div class="err-msg" id="gen-err"></div>
+
+  <div id="result" style="display:none;margin-top:1.5rem"></div>
+
 </div>
 
-<script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getDatabase,ref,set,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-const cfg={apiKey:"AIzaSyClfe5X7FOaBJtjKgDmLnS7ZFZCA7cOhgs",authDomain:"iron-grid-soccer.firebaseapp.com",databaseURL:"https://iron-grid-soccer-default-rtdb.firebaseio.com",projectId:"iron-grid-soccer",storageBucket:"iron-grid-soccer.firebasestorage.app",messagingSenderId:"5716922379",appId:"1:5716922379:web:033ab801a02dccc1b1f70e"};
-const ADMIN="gavinflick";
-const app=initializeApp(cfg),db=getDatabase(app),poolRef=ref(db,"football2");
-
+<script>
 const BG=["#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#F1EFE8","#E8EFF8","#FFF3E0","#FCE4EC","#E8F5E9","#E3F2FD","#F3E5F5","#E0F7FA","#FFF9C4","#EFEBE9","#E8EAF6","#F9FBE7","#E8F0FE","#FDE7F3","#E8F8F5","#FEF9E7","#EAF2F8"];
 const FG=["#3C3489","#085041","#712B13","#72243E","#0C447C","#27500A","#633806","#791F1F","#444441","#1a3a5c","#7a4400","#880033","#1b5e20","#0d3c6e","#4a148c","#006064","#665800","#3e2723","#1a237e","#33691e","#1a237e","#880e4f","#004d40","#7d6608","#1a5276"];
+const DOT=["#534AB7","#0F6E56","#993C1D","#993556","#185FA5","#3B6D11","#854F0B","#A32D2D","#5F5E5A","#1a3a5c","#7a4400","#880033","#1b5e20","#0d3c6e","#4a148c","#006064","#665800","#3e2723","#1a237e","#33691e","#1a237e","#880e4f","#004d40","#7d6608","#1a5276"];
 
-// Local entrant list (setup phase only)
-let localEntrants=[]; // [{name, pts}]
-let state=null;       // null = setup phase; object = grid generated
-let pendingAction=null;
+let names=[""];
+let payouts=[
+  {label:"1st Quarter",pct:12.5},
+  {label:"Halftime",pct:25},
+  {label:"3rd Quarter",pct:12.5},
+  {label:"Final Score",pct:50}
+];
+let lastNames=null,lastOwner=null,lastHome=null,lastAway=null;
 
-// ── Firebase sync ──
-onValue(poolRef,snapshot=>{
-  const data=snapshot.val();
-  if(data&&data.generated){
-    state=data;
-    showGridPhase();
-  }else{
-    state=null;
-    // Restore local entrants if saved
-    if(data&&data.entrants) localEntrants=data.entrants;
-    showSetupPhase();
-  }
-});
-
-function showSetupPhase(){
-  document.getElementById("setup-phase").style.display="block";
-  document.getElementById("grid-phase").style.display="none";
-  renderEntrantTable();
-}
-function showGridPhase(){
-  document.getElementById("setup-phase").style.display="none";
-  document.getElementById("grid-phase").style.display="block";
-  renderPoints();
-  renderGrid();
-  renderLegend();
-}
-
-// ── Entrant management ──
-window.addEntrant=function(){
-  const nameEl=document.getElementById("ent-name"),ptsEl=document.getElementById("ent-pts"),errEl=document.getElementById("ent-err");
-  const name=nameEl.value.trim(),pts=parseInt(ptsEl.value)||0;
-  errEl.classList.remove("show");
-  if(!name){errEl.textContent="Please enter a name.";errEl.classList.add("show");nameEl.focus();return}
-  if(localEntrants.some(e=>e.name.toLowerCase()===name.toLowerCase())){errEl.textContent="That name is already in the pool.";errEl.classList.add("show");nameEl.focus();return}
-  if(pts<1){errEl.textContent="Entry points must be at least 1.";errEl.classList.add("show");ptsEl.focus();return}
-  localEntrants.push({name,pts});
-  nameEl.value="";ptsEl.value="";nameEl.focus();
-  saveSetupState();
-  renderEntrantTable();
-};
-
-window.removeEntrant=function(i){
-  localEntrants.splice(i,1);
-  saveSetupState();
-  renderEntrantTable();
-};
-
-function saveSetupState(){
-  // Persist entrant list so page refresh doesn't wipe it
-  set(poolRef,{generated:false,entrants:localEntrants});
-}
-
-function calcSquares(entrants){
-  const total=100;
-  const totalPts=entrants.reduce((s,e)=>s+e.pts,0);
-  if(totalPts===0)return entrants.map(()=>0);
-  // Base allocation (floor)
-  const bases=entrants.map(e=>Math.floor(e.pts/totalPts*total));
-  const allocated=bases.reduce((s,v)=>s+v,0);
-  let remainder=total-allocated;
-  // Assign remainder by largest fractional part
-  const fracs=entrants.map((e,i)=>({i,frac:(e.pts/totalPts*total)-bases[i]}));
-  fracs.sort((a,b)=>b.frac-a.frac);
-  for(let k=0;k<remainder;k++) bases[fracs[k].i]++;
-  return bases;
-}
-
-function renderEntrantTable(){
-  const tbody=document.getElementById("ent-tbody"),tbl=document.getElementById("ent-table");
-  const gen=document.getElementById("gen-btn"),sum=document.getElementById("summary-line");
-  if(localEntrants.length===0){tbl.style.display="none";gen.disabled=true;sum.innerHTML="Add at least 2 entrants to generate the grid.";return}
-  tbl.style.display="table";
-  const squares=calcSquares(localEntrants);
-  const totalPts=localEntrants.reduce((s,e)=>s+e.pts,0);
-  const totalSq=squares.reduce((s,v)=>s+v,0);
-  tbody.innerHTML=localEntrants.map((e,i)=>`<tr>
-    <td style="color:var(--text-muted);font-size:11px">${i+1}</td>
-    <td style="font-weight:600">${e.name}</td>
-    <td><span class="pts-badge">${e.pts.toLocaleString()}</span></td>
-    <td><span class="squares-badge">${squares[i]}</span></td>
-    <td><button class="remove-btn" onclick="removeEntrant(${i})" title="Remove">&#x2715;</button></td>
-  </tr>`).join("");
-  document.getElementById("total-pts-badge").textContent=totalPts.toLocaleString();
-  document.getElementById("total-sq-badge").textContent=`${totalSq} / 100`;
-  gen.disabled=localEntrants.length<2;
-  // Summary
-  const q1=parseFloat(document.getElementById("q1-pts").value)||12.5;
-  const hf=parseFloat(document.getElementById("hf-pts").value)||25;
-  const q3=parseFloat(document.getElementById("q3-pts").value)||12.5;
-  const fn=parseFloat(document.getElementById("fn-pts").value)||50;
-  const pctTotal=Math.round((q1+hf+q3+fn)*10)/10;
-  const pctErr=document.getElementById("pct-err");
-  if(pctTotal!==100){pctErr.classList.add("show");gen.disabled=true;return}else{pctErr.classList.remove("show")}
-  sum.innerHTML=`<strong>${localEntrants.length} entrants</strong> &mdash; ${totalPts.toLocaleString()} total entry points &mdash; <strong>100 squares</strong> assigned proportionally &mdash; Payout: 1Q&nbsp;<strong>${q1}%</strong> / HF&nbsp;<strong>${hf}%</strong> / 3Q&nbsp;<strong>${q3}%</strong> / Final&nbsp;<strong>${fn}%</strong>`;
-}
-
-// Live-update summary when pts inputs change
-["q1-pts","hf-pts","q3-pts","fn-pts"].forEach(id=>document.getElementById(id).addEventListener("input",renderEntrantTable));
-
-// ── Admin modal ──
-window.requireAdmin=function(action){pendingAction=action;document.getElementById("modal-pw").value="";document.getElementById("modal-err").classList.remove("show");document.getElementById("admin-modal").classList.add("show");setTimeout(()=>document.getElementById("modal-pw").focus(),100)};
-window.closeModal=function(){document.getElementById("admin-modal").classList.remove("show");pendingAction=null};
-window.checkPassword=function(){
-  if(document.getElementById("modal-pw").value===ADMIN){
-    closeModal();
-    if(pendingAction==="generate")doGenerate();
-    else if(pendingAction==="reset")doReset();
-  }else{document.getElementById("modal-err").classList.add("show");document.getElementById("modal-pw").value="";document.getElementById("modal-pw").focus()}
-};
-document.getElementById("modal-pw").addEventListener("keydown",e=>{if(e.key==="Enter")window.checkPassword();if(e.key==="Escape")window.closeModal()});
-
-// ── Generate grid ──
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
 
-function doGenerate(){
-  const squares=calcSquares(localEntrants);
-  // Build pool: each name repeated according to their square count, then shuffle
-  let pool=[];
-  localEntrants.forEach((e,i)=>{for(let k=0;k<squares[i];k++)pool.push(e.name)});
-  pool=shuffle(pool); // randomises which specific squares each gets
-  const q1=parseFloat(document.getElementById("q1-pts").value)||12.5;
-  const hf=parseFloat(document.getElementById("hf-pts").value)||25;
-  const q3=parseFloat(document.getElementById("q3-pts").value)||12.5;
-  const fn=parseFloat(document.getElementById("fn-pts").value)||50;
-  set(poolRef,{
-    generated:true,
-    entrants:localEntrants,
-    cells:pool,
-    hd:shuffle([0,1,2,3,4,5,6,7,8,9]),
-    ad:shuffle([0,1,2,3,4,5,6,7,8,9]),
-    q1Pct:q1,hfPct:hf,q3Pct:q3,fnPct:fn
+function renderNames(){
+  document.getElementById("name-grid").innerHTML=names.map((n,i)=>`
+    <div class="name-row">
+      <span class="name-num">${i+1}</span>
+      <input type="text" value="${n.replace(/"/g,"&quot;")}" placeholder="Name ${i+1}" oninput="names[${i}]=this.value;updatePool()">
+      <button class="remove-btn" onclick="removeName(${i})" aria-label="Remove">&times;</button>
+    </div>`).join("");
+}
+function addName(){
+  document.getElementById("name-err").textContent="";
+  names.push("");renderNames();updatePool();
+  document.querySelectorAll(".name-row input")[names.length-1].focus();
+}
+function removeName(i){if(names.length<=1)return;names.splice(i,1);renderNames();updatePool()}
+
+function updatePool(){
+  const ep=parseFloat(document.getElementById("entry-pts").value)||0;
+  const n=names.filter(x=>x.trim()).length;
+  document.getElementById("total-pool").textContent=(n*ep).toLocaleString()+" pts";
+  updatePayoutStatus();
+}
+
+function renderPayouts(){
+  document.getElementById("payout-rows").innerHTML=payouts.map((p,i)=>`
+    <div class="payout-entry">
+      <div>${i===0?"<label class=\"field-label\">Checkpoint label</label>":""}
+        <input type="text" value="${p.label.replace(/"/g,"&quot;")}" placeholder="e.g. Halftime" oninput="payouts[${i}].label=this.value">
+      </div>
+      <div>${i===0?"<label class=\"field-label\">% of pool</label>":""}
+        <input type="number" value="${p.pct}" min="0" max="100" step="0.5" oninput="payouts[${i}].pct=parseFloat(this.value)||0;updatePayoutStatus()">
+      </div>
+      <button class="remove-btn" style="padding-top:${i===0?"20px":"0"}" onclick="removePayout(${i})" aria-label="Remove">&times;</button>
+    </div>`).join("");
+  updatePayoutStatus();
+}
+function addPayout(){payouts.push({label:"",pct:0});renderPayouts()}
+function removePayout(i){if(payouts.length<=1)return;payouts.splice(i,1);renderPayouts()}
+
+function updatePayoutStatus(){
+  const sum=Math.round(payouts.reduce((a,p)=>a+(parseFloat(p.pct)||0),0)*10)/10;
+  document.getElementById("payout-status").innerHTML=sum===100
+    ?"<span class=\"ok\">&#10003; Payouts total 100%</span>"
+    :`<span class="err">Payouts total ${sum}% &mdash; must equal 100%</span>`;
+}
+
+function buildGrid(vn){
+  const n=vn.length,total=100;
+  const base=Math.floor(total/n),extra=total%n;
+  const order=shuffle([...Array(n).keys()]);
+  const owner=new Array(total);
+  const positions=shuffle([...Array(total).keys()]);
+  let pos=0;
+  order.forEach((pi,rank)=>{
+    const count=base+(rank<extra?1:0);
+    for(let s=0;s<count;s++)owner[positions[pos++]]=pi;
   });
+  return{owner,home:shuffle([0,1,2,3,4,5,6,7,8,9]),away:shuffle([0,1,2,3,4,5,6,7,8,9])};
 }
 
-function doReset(){
-  localEntrants=[];
-  set(poolRef,{generated:false,entrants:[]});
-}
+function renderResult(vn,owner,home,away){
+  const ep=parseFloat(document.getElementById("entry-pts").value)||0;
+  const total=vn.length*ep;
+  const base=Math.floor(100/vn.length),extra=100%vn.length;
+  let h="";
 
-// ── Render grid ──
-function colorOf(name){
-  const idx=state.entrants.findIndex(e=>e.name===name);
-  return{bg:BG[idx%BG.length],fg:FG[idx%FG.length]};
-}
+  // Metrics
+  h+=`<div class="section-label">Summary</div><div class="metrics">
+    <div class="metric"><div class="metric-label">Total pool</div><div class="metric-value">${total.toLocaleString()} pts</div></div>
+    <div class="metric"><div class="metric-label">Participants</div><div class="metric-value">${vn.length}</div></div>
+    <div class="metric"><div class="metric-label">Entry pts each</div><div class="metric-value">${ep}</div></div>
+    <div class="metric"><div class="metric-label">Squares each</div><div class="metric-value">${base}${extra>0?"&ndash;"+(base+1):""}</div></div>
+  </div>`;
 
-function renderGrid(){
-  const {cells,hd,ad}=state;
-  let h="<thead><tr><th class=\"corner ax\"></th>";
-  for(let i=0;i<10;i++)h+=`<th class="ax">${hd[i]}</th>`;
+  // Payouts — use fixed chip classes for the default 4; fall back to generic for custom
+  const chipClasses=["q1","hf","q3","fn"];
+  h+=`<div class="section-label">Payouts</div><div class="payouts-row">`;
+  payouts.forEach((p,i)=>{
+    const amt=Math.round(total*(parseFloat(p.pct)||0)/100*10)/10;
+    const cls=chipClasses[i]||"";
+    h+=`<div class="payout-chip ${cls}"><div class="chip-label">${p.label||"Checkpoint "+(i+1)}</div><div class="chip-amount">${amt} pts</div><div class="chip-sub">${p.pct}% of pool</div></div>`;
+  });
+  h+="</div>";
+
+  // Assignments
+  h+=`<div class="section-label">Assignments</div><div class="pills">`;
+  vn.forEach((name,i)=>{
+    const sqs=owner.reduce((a,o,idx)=>{if(o===i)a.push(idx);return a;},[]);
+    const coords=sqs.map(idx=>`${home[idx%10]}-${away[Math.floor(idx/10)]}`).join(" ");
+    h+=`<div class="pill"><div class="pdot" style="background:${DOT[i%DOT.length]}"></div><span class="pill-name">${name}</span><span class="pill-squares">${coords}</span></div>`;
+  });
+  h+="</div>";
+
+  // Action buttons
+  h+=`<div class="action-btns">
+    <button class="reroll-btn" onclick="reroll()">&#8635; Re-randomize</button>
+    <button class="print-btn" onclick="window.print()">&#128438; Print / Save</button>
+  </div>`;
+
+  // Grid
+  h+=`<div class="section-label">Grid &mdash; home team (columns) | away team (rows)</div>
+  <div class="grid-outer">
+    <table class="sq"><thead><tr><th class="corner ax"></th>`;
+  home.forEach(d=>{h+=`<th class="ax">${d}</th>`});
   h+="</tr></thead><tbody>";
   for(let r=0;r<10;r++){
-    h+=`<tr><th class="ax">${ad[r]}</th>`;
+    h+=`<tr><th class="ax">${away[r]}</th>`;
     for(let c=0;c<10;c++){
-      const idx=r*10+c,name=cells[idx]||"";
-      const {bg,fg}=colorOf(name);
-      h+=`<td class="sq-cell" style="background:${bg};color:${fg}"><div class="cell-inner"><div class="cell-name">${name}</div><div class="cell-coord">${hd[c]}-${ad[r]}</div></div></td>`;
+      const idx=r*10+c,o=owner[idx];
+      h+=`<td class="sq-cell" style="background:${BG[o%BG.length]};color:${FG[o%FG.length]}"><div class="sq-name">${vn[o]}</div><div class="sq-coord">${home[c]}-${away[r]}</div></td>`;
     }
     h+="</tr>";
   }
-  h+="</tbody>";
-  document.getElementById("sq-table").innerHTML=h;
+  h+="</tbody></table></div>";
+
+  // Legend
+  h+=`<div class="section-label">Legend</div><div class="legend">`;
+  vn.forEach((name,i)=>{
+    const sq=owner.filter(o=>o===i).length;
+    h+=`<div class="legend-item"><div class="ldot" style="background:${BG[i%BG.length]};border-color:${DOT[i%DOT.length]}"></div>${name} <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-hint)">(${sq} sq)</span></div>`;
+  });
+  h+="</div>";
+
+  // Rules
+  const noteExtra=extra>0?` With ${vn.length} participants, ${extra} player${extra>1?"s":""} get${extra===1?"s":""} ${base+1} squares; the rest get ${base}.`:"";
+  h+=`<div class="rules-box"><strong>How to find the winner:</strong> At each checkpoint, take the last digit of each team's score. Find where the home digit (column) meets the away digit (row) &mdash; that square wins the points for that checkpoint.<br><br><strong>Digits are randomized</strong> &mdash; make sure everyone sees the final grid before the match.${noteExtra}</div>`;
+
+  const res=document.getElementById("result");
+  res.innerHTML=h;res.style.display="block";
+  res.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-function renderPoints(){
-  const q1=state.q1Pct??12.5,hf=state.hfPct??25,q3=state.q3Pct??12.5,fn=state.fnPct??50;
-  document.getElementById("points-area").innerHTML=`
-    <div class="points-card q1"><div class="points-card-label">&#x1F3C8; 1st Quarter</div><div class="points-card-value">${q1}%</div><div class="points-card-sub">of pool payout</div></div>
-    <div class="points-card hf"><div class="points-card-label">&#x23F1; Halftime</div><div class="points-card-value">${hf}%</div><div class="points-card-sub">of pool payout</div></div>
-    <div class="points-card q3"><div class="points-card-label">&#x1F3C8; 3rd Quarter</div><div class="points-card-value">${q3}%</div><div class="points-card-sub">of pool payout</div></div>
-    <div class="points-card fn"><div class="points-card-label">&#x1F3C6; Final Score</div><div class="points-card-value">${fn}%</div><div class="points-card-sub">of pool payout</div></div>`;
+function generate(){
+  document.getElementById("gen-err").textContent="";
+  const vn=names.filter(n=>n.trim());
+  if(vn.length<2){document.getElementById("gen-err").textContent="Add at least 2 participants.";return}
+  const ep=parseFloat(document.getElementById("entry-pts").value)||0;
+  if(ep<1){document.getElementById("gen-err").textContent="Enter a valid entry points value (minimum 1).";return}
+  const sum=Math.round(payouts.reduce((a,p)=>a+(parseFloat(p.pct)||0),0)*10)/10;
+  if(sum!==100){document.getElementById("gen-err").textContent="Payouts must total 100%.";return}
+  const{owner,home,away}=buildGrid(vn);
+  lastNames=vn;lastOwner=owner;lastHome=home;lastAway=away;
+  renderResult(vn,owner,home,away);
 }
 
-function renderLegend(){
-  const squares=calcSquares(state.entrants);
-  document.getElementById("legend").innerHTML=state.entrants.map((e,i)=>{
-    const {bg,fg}=colorOf(e.name);
-    return `<div class="legend-item"><div class="legend-swatch" style="background:${bg};border:1px solid ${fg}22"></div><span>${e.name}</span><span class="legend-pts">${squares[i]} sq &bull; ${e.pts.toLocaleString()} pts</span></div>`;
-  }).join("");
+function reroll(){
+  if(!lastNames)return;
+  const{owner,home,away}=buildGrid(lastNames);
+  lastOwner=owner;lastHome=home;lastAway=away;
+  renderResult(lastNames,owner,home,away);
 }
+
+renderNames();renderPayouts();updatePool();
 </script>
 </body>
 </html>
