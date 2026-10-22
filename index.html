@@ -107,6 +107,21 @@ table.sq .sq-cell{height:50px;width:66px;-webkit-print-color-adjust:exact;print-
 
 @media(max-width:520px){.metrics{grid-template-columns:repeat(2,1fr)}.row2{grid-template-columns:1fr}.payout-entry{grid-template-columns:1fr 90px 28px}}
 @media print{.step,.generate-btn,.action-btns,.icon-btn{display:none!important}header{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+  .venmo-box{
+    background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);
+    padding:1.25rem;margin-top:1.25rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;
+  }
+  .venmo-box .venmo-text{flex:1;min-width:180px}
+  .venmo-box .venmo-text p{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:.5rem}
+  .venmo-box .venmo-text p strong{color:var(--text)}
+  .venmo-link{
+    display:inline-block;background:#008CFF;color:white;border-radius:var(--radius);
+    padding:9px 20px;font-size:13px;font-weight:700;text-decoration:none;
+    font-family:"DM Sans",sans-serif;letter-spacing:.02em;
+  }
+  .venmo-link:hover{background:#0070CC}
+  @media print{.venmo-box{display:none!important}}
 </style>
 </head>
 <body>
@@ -311,6 +326,12 @@ function renderResult(vn,owner,home,away){
   // Rules
   const noteExtra=extra>0?` With ${vn.length} participants, ${extra} player${extra>1?"s":""} get${extra===1?"s":""} ${base+1} squares; the rest get ${base}.`:"";
   h+=`<div class="rules-box"><strong>How to find the winner:</strong> At each checkpoint, take the last digit of each team's score. Find where the home digit (column) meets the away digit (row) &mdash; that square wins the points for that checkpoint.<br><br><strong>Digits are randomized</strong> &mdash; make sure everyone sees the final grid before the match.${noteExtra}</div>`;
+  h+=`<div class="venmo-box">
+    <div class="venmo-text">
+      <p><strong>Enjoying Iron Grid?</strong> Buy us a coffee! ☕ Totally optional &mdash; the game is always free.</p>
+      <a class="venmo-link" href="https://venmo.com/u/IRONGRID" target="_blank" rel="noopener">Tip us on Venmo @IRONGRID</a>
+    </div>
+  </div>`;
 
   const res=document.getElementById("result");
   res.innerHTML=h;res.style.display="block";
