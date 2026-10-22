@@ -122,6 +122,11 @@ table.sq .sq-cell{height:50px;width:66px;-webkit-print-color-adjust:exact;print-
   }
   .venmo-link:hover{background:#0070CC}
   @media print{.venmo-box{display:none!important}}
+
+  .disclaimer{
+    text-align:center;font-size:11px;color:var(--text-hint);
+    padding:1.5rem 1rem 0.5rem;letter-spacing:.03em;
+  }
 </style>
 </head>
 <body>
@@ -184,6 +189,8 @@ table.sq .sq-cell{height:50px;width:66px;-webkit-print-color-adjust:exact;print-
   <div id="result" style="display:none;margin-top:1.5rem"></div>
 
 </div>
+
+  <div class="disclaimer">For entertainment purposes only.</div>
 
 <script>
 const BG=["#EEEDFE","#E1F5EE","#FAECE7","#FBEAF0","#E6F1FB","#EAF3DE","#FAEEDA","#FCEBEB","#F1EFE8","#E8EFF8","#FFF3E0","#FCE4EC","#E8F5E9","#E3F2FD","#F3E5F5","#E0F7FA","#FFF9C4","#EFEBE9","#E8EAF6","#F9FBE7","#E8F0FE","#FDE7F3","#E8F8F5","#FEF9E7","#EAF2F8"];
@@ -287,7 +294,7 @@ function renderResult(vn,owner,home,away){
   // Action buttons
   h+=`<div class="action-btns">
     <button class="reroll-btn" onclick="reroll()">&#8635; Re-randomize</button>
-    <button class="print-btn" onclick="window.print()">&#128438; Print / Save</button>
+    <button class="print-btn" onclick="window.print()">&#8679; Share / Save</button>
   </div>`;
 
   // Grid
