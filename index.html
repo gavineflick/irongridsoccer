@@ -294,7 +294,7 @@ function renderResult(vn,owner,home,away){
   // Action buttons
   h+=`<div class="action-btns">
     <button class="reroll-btn" onclick="reroll()">&#8635; Re-randomize</button>
-    <button class="print-btn" onclick="window.print()">&#8679; Share / Save</button>
+    <button class="print-btn" onclick="printAsPDF()">&#8679; Share / Save</button>
   </div>`;
 
   // Grid
@@ -363,6 +363,14 @@ function reroll(){
   const{owner,home,away}=buildGrid(lastNames);
   lastOwner=owner;lastHome=home;lastAway=away;
   renderResult(lastNames,owner,home,away);
+}
+
+function printAsPDF(){
+  const style=document.createElement("style");
+  style.innerHTML="@page{size:auto;margin:10mm}";
+  document.head.appendChild(style);
+  window.print();
+  setTimeout(()=>document.head.removeChild(style),1000);
 }
 
 renderNames();renderPayouts();updatePool();
